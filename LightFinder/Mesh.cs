@@ -18,5 +18,15 @@ namespace LightFinder
         {
             throw new NotImplementedException();
         }
+
+        public int GetPolyCount()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetTriangleCount()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

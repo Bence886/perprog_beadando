@@ -21,6 +21,22 @@ namespace LightFinder
             CreateFloor(-1);
         }
 
+        public void StartSim()
+        {
+            foreach (Camera item in Cameras)
+            {
+                foreach (var akt in item.LookDirections)
+                {
+                    akt.End.MultiplyByLambda(Trace(akt));
+                }
+            }
+        }
+
+        private float Trace(Vector akt)
+        {
+            throw new NotImplementedException();
+        }
+
         private void CreateFloor(float z)
         {
             Mesh floor = new Mesh();

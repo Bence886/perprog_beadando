@@ -16,5 +16,19 @@ namespace LightFinder
             Start = s;
             End = e;
         }
+
+        public void DevideByLambda(float b)
+        {
+            End.x /= b;
+            End.y /= b;
+            End.z /= b;
+        }
+
+        public float Length()
+        {
+            Point a = End - Start;
+            return (float)Math.Sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+        }
+
     }
 }

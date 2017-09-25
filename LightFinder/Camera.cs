@@ -10,24 +10,46 @@ namespace LightFinder
     {
         public Point Origin { get; set; }
         public Sphere Sphere { get; set; }
-        Dictionary<Vector, float> LookDirections;
+        public List<Vector> LookDirections { get; set; }
 
         public Camera(Vector b)
         {
-            LookDirections = new Dictionary<Vector, float>();
+            LookDirections = new List<Vector>();
             Origin = b.End;
-            GenerateLookDirections(b);
+            GenerateLookDirections(b, 10);
         }
 
-#warning "Ez lehet async?!"
-        private void GenerateLookDirections(Vector branch) 
-        {
-
+#warning "ezt valahogy tesztelni kell!!"
+        private void GenerateLookDirections(Vector branch, int resolution)
+        {//https://www.cmu.edu/biolphys/deserno/pdf/sphere_equi.pdf
+            int n = 0;
+            while (n < resolution)
+            {
+                double a = 4 * Math.PI * (Sphere.Radius * Sphere.Radius) / n;
+                double d = Math.Sqrt(a);
+                int M1 = (int)Math.Round(Math.PI / d, 0);
+                double d0 = Math.PI / M1;
+                double d1 = a / d0;
+                for (int i = 0; i < M1 - 1; i++)
+                {
+                    double ro = Math.PI * (i + 0.5) / M1;
+                    double M2 = Math.Round(2 * Math.PI * Math.Sin(ro / d1));
+                    for (int j = 0; j < M2; j++)
+                    {
+                        double fi = 2 * Math.PI * j / M2;
+                        Vector v = new Vector(new Point(0, 0, 0), new Point((float)(Sphere.Radius * (Math.Sin(ro) * Math.Cos(fi))), (float)(Sphere.Radius * (Math.Sin(ro) * Math.Sin(fi))), (float)Math.Cos(ro)));
+                        v.DevideByLambda(Sphere.Radius);
+                        LookDirections.Add(v);
+                        n++;
+                    }
+                }
+            }
         }
 
+#warning majd kiderül kell e átlagolni vagy így jó
         public Vector GetBrightestLightDirection()
         {
-            return LookDirections.Max().Key;
+            return new Vector(Sphere.Center, LookDirections.Where(x=>x.Length() == LookDirections.Max().Length()).SingleOrDefault().End);
         }
     }
 }

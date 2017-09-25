@@ -9,5 +9,7 @@ namespace LightFinder
     interface IMesh
     {
         Point[] GetTriangles();
+        int GetPolyCount();
+        int GetTriangleCount();
     }
 }
