@@ -1,0 +1,15 @@
+<random>
+  <lights>
+      <light posx="2" posy="2" posz="10" intensity="10"/>
+  </lights>
+  <meshes>
+    <mesh>
+        <point posx="0" posy="0" posz="5"/>
+        <point posx="0" posy="5" posz="5"/>
+        <point posx="5" posy="0" posz="5"/>
+    </mesh>
+  </meshes>
+  <branches>
+    <branch startx="0" starty="0" startz="0" endx="2" endy="2" endz="1" />
+  </branches>
+</random>
