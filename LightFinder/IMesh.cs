@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace LightFinder
 {
-    class Program
+    interface IMesh
     {
-        static void Main(string[] args)
-        {
-            Scene s = new Scene("in.xml");
-        }
+        Point[] GetTriangles();
     }
 }
