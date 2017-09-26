@@ -21,14 +21,11 @@ namespace LightFinder
             CreateFloor(-1);
         }
 
-        public void StartSim()
+        public void StartTrace()
         {
             foreach (Camera item in Cameras)
             {
-                foreach (var akt in item.LookDirections)
-                {
-                    akt.End.MultiplyByLambda(Trace(akt));
-                }
+                item.Trace(Lights, Meshes);
             }
         }
 

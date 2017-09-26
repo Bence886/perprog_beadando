@@ -16,6 +16,7 @@ namespace LightFinder
         {
             LookDirections = new List<Vector>();
             Origin = b.End;
+            Sphere = new Sphere(Origin, 10);
             GenerateLookDirections(b, 10);
         }
 
@@ -44,6 +45,11 @@ namespace LightFinder
                     }
                 }
             }
+        }
+
+        public void Trace(List<LightSource> lights, List<IMesh> meshes)
+        {
+            throw new NotImplementedException();
         }
 
 #warning majd kiderül kell e átlagolni vagy így jó

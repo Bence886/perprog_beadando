@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LightFinder
 {
-    class Point
+    public class Point
     {
         public float x { get; set; }
         public float y { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LightFinder
 {
-    class Mesh:IMesh
+    class Mesh : IMesh
     {
         public List<Point> Points { get; set; }
         public Mesh()
@@ -14,17 +14,7 @@ namespace LightFinder
             Points = new List<Point>();
         }
 
-        public Point[] GetTriangles()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetPolyCount()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetTriangleCount()
+        public List<Triangle> GetTriengles()
         {
             throw new NotImplementedException();
         }

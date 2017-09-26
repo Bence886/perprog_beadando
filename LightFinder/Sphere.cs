@@ -17,17 +17,7 @@ namespace LightFinder
             Radius = r;
         }
 
-        public Point[] GetTriangles()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetPolyCount()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetTriangleCount()
+        public List<Triangle> GetTriengles()
         {
             throw new NotImplementedException();
         }
