@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LightFinder
 {
-    class Sphere : IMesh
+    class Sphere
     {
         public Point Center { get; set; }
         public float Radius { get; set; }
@@ -15,11 +15,6 @@ namespace LightFinder
         {
             Center = c;
             Radius = r;
-        }
-
-        public List<Triangle> GetTriengles()
-        {
-            throw new NotImplementedException();
         }
     }
 }

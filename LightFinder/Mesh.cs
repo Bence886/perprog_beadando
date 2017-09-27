@@ -16,7 +16,7 @@ namespace LightFinder
 
         public List<Triangle> GetTriengles()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

@@ -29,6 +29,5 @@ namespace LightFinder
             Point a = End - Start;
             return (float)Math.Sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
         }
-
     }
 }
