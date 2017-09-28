@@ -25,8 +25,8 @@ namespace LightFinder
         {
             Point u = (p1 - p0);
             Point v = (p2 - p0);
-            Point p = new Point((u.y * v.z - u.z * v.y), (u.z * v.x - u.x * v.z), (u.x*v.z-u.y*v.x));
-            
+            Point p = new Point((u.y * v.z - u.z * v.y), (u.z * v.x - u.x * v.z), (u.x * v.z - u.y * v.x));
+
             Vector V = new Vector(new Point(0, 0, 0), p);
             V.DevideByLambda(V.Length());
             normal = V;
@@ -35,13 +35,47 @@ namespace LightFinder
         public Point InsideTringle(Vector ray)
         {//http://geomalgorithms.com/a06-_intersect-2.html
             Vector u, v, n;
-            Vector dir, w0, w;
+            Vector w0, w;
             float r, a, b;
+
             u = new Vector(p1 - p0);
             v = new Vector(p2 - p0);
+            n = Vector.CrossProduct(u, v);
 
-            n = u * v;
+            if (n.Length() == 0)
+            {
+                throw new DegenerateTringle();
+            }
+            w0 = new Vector(ray.End - p0);
+            a = -Vector.DotProduct(n, w0);
+            b = Vector.DotProduct(n, ray);
+            if (Math.Abs(b) < 0.00000001)
+            {
+                if (a == 0)
+                {
+                    throw new LineParalelWithTriengle();
+                }
+            }
+            r = a / b;
+            if (r < 0.0)
+            {
+                throw new WrongDirection();
+            }
+            Point I;
+            Vector dir = ray;
+            dir.MultiplyByLambda(r);
+            I = ray.End + dir.End;
 
+            float uu, uv, vv,  wu, wv, D;
+            uu = Vector.DotProduct(u, u);
+            uv = Vector.DotProduct(u, v);
+            vv = Vector.DotProduct(v, v);
+            //w
+            wu = Vector.DotProduct(w, u);
+            wv = Vector.DotProduct(w, v);
+            D = uv * uv - uu * vv;
+            
+            return I;
         }
     }
 }

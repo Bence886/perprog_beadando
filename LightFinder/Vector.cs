@@ -40,15 +40,29 @@ namespace LightFinder
             return new Vector(a.Start + b.Start, a.End + b.End);
         }
 
-        public static Vector DotProduct(Vector v0, Vector v1)
+        public static Vector CrossProduct(Vector v0, Vector v1)
         {
-            Vector u, v;
-            u = (v0.)
+            Point u = v1.End;
+            Point v = v1.End;
+
             Point p = new Point((u.y * v.z - u.z * v.y), (u.z * v.x - u.x * v.z), (u.x * v.z - u.y * v.x));
 
             Vector V = new Vector(new Point(0, 0, 0), p);
             V.DevideByLambda(V.Length());
-            normal = V;
+            return V;
+        }
+
+        public static float DotProduct(Vector v0, Vector v1)
+        {
+            Point u=v0.End, v=v1.End;
+            return (u.x * v.x + u.y * v.y + u.z * v.z);
+        }
+
+        public void MultiplyByLambda(float f)
+        {
+            End.x *= f;
+            End.y *= f;
+            End.z *= f;
         }
 
         public float Length()
