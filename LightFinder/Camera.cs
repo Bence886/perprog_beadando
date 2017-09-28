@@ -47,12 +47,11 @@ namespace LightFinder
             }
         }
 
-        public void Trace(List<LightSource> lights, List<IMesh> meshes)
+        public void Trace(List<LightSource> lights, List<Mesh> meshes)
         {
             throw new NotImplementedException();
         }
 
-#warning majd kiderül kell e átlagolni vagy így jó
         public Vector GetBrightestLightDirection()
         {
             return new Vector(Sphere.Center, LookDirections.Where(x=>x.Length() == LookDirections.Max().Length()).SingleOrDefault().End);

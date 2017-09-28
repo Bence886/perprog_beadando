@@ -6,17 +6,12 @@ using System.Threading.Tasks;
 
 namespace LightFinder
 {
-    class Mesh : IMesh
+    class Mesh
     {
-        public List<Point> Points { get; set; }
+        public List<Triangle> Triangles { get; set; }
         public Mesh()
         {
-            Points = new List<Point>();
-        }
-
-        public List<Triangle> GetTriengles()
-        {
-            
+            Triangles = new List<Triangle>();
         }
     }
 }

@@ -32,9 +32,16 @@ namespace LightFinder
             normal = V;
         }
 
-        public Point InsideTringle(Vector v)
-        {
-            throw new NotImplementedException();
+        public Point InsideTringle(Vector ray)
+        {//http://geomalgorithms.com/a06-_intersect-2.html
+            Vector u, v, n;
+            Vector dir, w0, w;
+            float r, a, b;
+            u = new Vector(p1 - p0);
+            v = new Vector(p2 - p0);
+
+            n = u * v;
+
         }
     }
 }
