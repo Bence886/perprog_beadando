@@ -19,6 +19,17 @@ namespace LightFinder
             Cameras = new List<Camera>();
             ReadInputFile(filename);
             CreateFloor(-1);
+            InitCameras();
+        }
+
+        private void InitCameras()
+        {
+            Console.WriteLine("Started Cameras init");
+            foreach (Camera item in Cameras)
+            {
+                item.Init();
+            }
+            Console.WriteLine("Finished Cameras init");
         }
 
         public void StartTrace()
@@ -31,6 +42,10 @@ namespace LightFinder
 
         private float Trace(Vector akt)
         {
+            foreach (Camera item in Cameras)
+            {
+                item.Trace(Lights, Triangles);
+            }
             throw new NotImplementedException();
         }
 
@@ -38,6 +53,7 @@ namespace LightFinder
         {
             Triangles.Add(new Triangle(new Point(100, -100, 0), new Point(100, 100, 0), new Point(-100, 100, 0)));
             Triangles.Add(new Triangle(new Point(-100, 100, 0), new Point(-100, -100, 0), new Point(100, -100, 0)));
+            Console.WriteLine("Created floors");
         }
 
         private void ReadInputFile(string filename)
