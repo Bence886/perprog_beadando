@@ -1,15 +1,20 @@
 <random>
   <lights>
-      <light posx="2" posy="2" posz="10" intensity="10"/>
+      <light posx="0" posy="0" posz="10" intensity="10"/>
   </lights>
-  <meshes>
-    <mesh>
-        <point posx="0" posy="0" posz="5"/>
-        <point posx="0" posy="5" posz="5"/>
-        <point posx="5" posy="0" posz="5"/>
-    </mesh>
-  </meshes>
+  <triangles>
+    <triangle>
+        <point0 posx="10" posy="-10" posz="5"/>
+        <point1 posx="10" posy="10" posz="5"/>
+        <point2 posx="-10" posy="10" posz="5"/>
+    </triangle>
+	<triangle>
+        <point0 posx="-10" posy="10" posz="5"/>
+        <point1 posx="-10" posy="-10" posz="5"/>
+        <point2 posx="10" posy="-10" posz="5"/>
+    </triangle>
+  </triangles>
   <branches>
-    <branch startx="0" starty="0" startz="0" endx="2" endy="2" endz="1" />
+    <branch startx="0" starty="0" startz="0" endx="0" endy="0" endz="1" />
   </branches>
 </random>

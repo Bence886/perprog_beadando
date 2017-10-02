@@ -71,8 +71,8 @@ namespace LightFinder
             uv = Vector.DotProduct(u, v);
             vv = Vector.DotProduct(v, v);
             //w
-            wu = Vector.DotProduct(w, u);
-            wv = Vector.DotProduct(w, v);
+            //wu = Vector.DotProduct(w, u);
+            //wv = Vector.DotProduct(w, v);
             D = uv * uv - uu * vv;
             
             return I;

@@ -9,13 +9,13 @@ namespace LightFinder
     class Scene
     {
         public List<LightSource> Lights { get; set; }
-        public List<IMesh> Meshes { get; set; }
+        public List<Triangle> Triangles { get; set; }
         public List<Camera> Cameras { get; set; }
 
         public Scene(string filename)
         {
             Lights = new List<LightSource>();
-            Meshes = new List<IMesh>();
+            Triangles = new List<Triangle>();
             Cameras = new List<Camera>();
             ReadInputFile(filename);
             CreateFloor(-1);
@@ -25,7 +25,7 @@ namespace LightFinder
         {
             foreach (Camera item in Cameras)
             {
-                item.Trace(Lights, Meshes);
+                item.Trace(Lights, Triangles);
             }
         }
 
@@ -36,21 +36,20 @@ namespace LightFinder
 
         private void CreateFloor(float z)
         {
-            Mesh floor = new Mesh();
-            floor.Points.Add(new Point(-100, -100, z));
-            floor.Points.Add(new Point(100, -100, z));
-            floor.Points.Add(new Point(100, 100, z));
-            floor.Points.Add(new Point(-100, 100, z));
-
-            Meshes.Add(floor);
+            Triangles.Add(new Triangle(new Point(100, -100, 0), new Point(100, 100, 0), new Point(-100, 100, 0)));
+            Triangles.Add(new Triangle(new Point(-100, 100, 0), new Point(-100, -100, 0), new Point(100, -100, 0)));
         }
 
         private void ReadInputFile(string filename)
         {
             MyXMLReader x = new MyXMLReader(filename);
-            Meshes = x.GetMeshes();
+            Console.WriteLine("Opened xml");
+            Triangles = x.GetTriangles();
+            Console.WriteLine("Loaded triangles");
             Lights = x.GetLights();
+            Console.WriteLine("Loaded lights");
             Cameras = x.GetCameras();
+            Console.WriteLine("Loaded cameras");
         }
     }
 }

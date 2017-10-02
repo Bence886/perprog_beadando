@@ -48,7 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
-    <Compile Include="Mesh.cs" />
     <Compile Include="LightSource.cs" />
     <Compile Include="MyExceptions.cs" />
     <Compile Include="MyXMLReader.cs" />

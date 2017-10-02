@@ -47,7 +47,7 @@ namespace LightFinder
             }
         }
 
-        public void Trace(List<LightSource> lights, List<Mesh> meshes)
+        public void Trace(List<LightSource> lights, List<Triangle> meshes)
         {
             throw new NotImplementedException();
         }
