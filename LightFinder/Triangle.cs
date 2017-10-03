@@ -12,24 +12,27 @@ namespace LightFinder
         {
             this.p1 = p1;
             this.p2 = p2;
-            this.p0 = p3;
+            this.p3 = p3;
             CalcNormal();
         }
 
         public Point p1 { get; set; }
         public Point p2 { get; set; }
-        public Point p0 { get; set; }
+        public Point p3 { get; set; }
         public Vector normal { get; set; }
 
         private void CalcNormal()
-        {
-            Point u = (p1 - p0);
-            Point v = (p2 - p0);
-            Point p = new Point((u.y * v.z - u.z * v.y), (u.z * v.x - u.x * v.z), (u.x * v.z - u.y * v.x));
+        {//https://math.stackexchange.com/questions/305642/how-to-find-surface-normal-of-a-triangle
+            Point u = (p2 - p1);
+            Point v = (p3 - p1);
 
-            Vector V = new Vector(new Point(0, 0, 0), p);
-            V.DevideByLambda(V.Length());
-            normal = V;
+            float Nx, Ny, Nz;
+            Nx = (u.y * v.z - u.z * v.y);
+            Ny = (u.z * v.x - u.x * v.z);
+            Nz = (u.x * v.z - u.y * v.x);
+            
+            normal = new Vector(new Point(0, 0, 0), new Point(Nx, Ny, Nz));
+            normal.ConvertToUnitVector();            
         }
 
         public Point InsideTringle(Vector ray)
@@ -38,15 +41,15 @@ namespace LightFinder
             Vector w0, w;
             float r, a, b;
 
-            u = new Vector(p1 - p0);
-            v = new Vector(p2 - p0);
+            u = new Vector(p1 - p3);
+            v = new Vector(p2 - p3);
             n = Vector.CrossProduct(u, v);
 
             if (n.Length() == 0)
             {
                 throw new DegenerateTringle();
             }
-            w0 = new Vector(ray.End - p0);
+            w0 = new Vector(ray.End - p3);
             a = -Vector.DotProduct(n, w0);
             b = Vector.DotProduct(n, ray);
             if (Math.Abs(b) < 0.00000001)
@@ -66,7 +69,7 @@ namespace LightFinder
             dir.MultiplyByLambda(r);
             I = ray.End + dir.End;
 
-            float uu, uv, vv,  wu, wv, D;
+            float uu, uv, vv, wu, wv, D;
             uu = Vector.DotProduct(u, u);
             uv = Vector.DotProduct(u, v);
             vv = Vector.DotProduct(v, v);
@@ -74,7 +77,7 @@ namespace LightFinder
             wu = Vector.DotProduct(w, u);
             wv = Vector.DotProduct(w, v);
             D = uv * uv - uu * vv;
-            
+
             return I;
         }
     }

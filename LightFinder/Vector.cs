@@ -52,6 +52,12 @@ namespace LightFinder
             return V;
         }
 
+        public void ConvertToUnitVector()
+        {
+            float l = Length();
+            DevideByLambda(l);
+        }
+
         public static float DotProduct(Vector v0, Vector v1)
         {
             Point u=v0.End, v=v1.End;

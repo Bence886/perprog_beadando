@@ -36,7 +36,7 @@ namespace LightFinder
         {
             foreach (Camera item in Cameras)
             {
-                item.Trace(Lights, Triangles);
+                item.StartTrace(Lights, Triangles);
             }
         }
 
@@ -44,7 +44,7 @@ namespace LightFinder
         {
             foreach (Camera item in Cameras)
             {
-                item.Trace(Lights, Triangles);
+                item.StartTrace(Lights, Triangles);
             }
             throw new NotImplementedException();
         }

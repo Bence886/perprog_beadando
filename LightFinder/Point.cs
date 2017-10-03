@@ -35,5 +35,15 @@ namespace LightFinder
             y *= a;
             z *= a;
         }
+
+        public override string ToString()
+        {
+            return String.Format("X:{0}, Y:{1}, Z:{2}", x, y, z);
+        }
+
+        public string ToFile()
+        {
+            return string.Format("({0}% {1}% {2})%", x, y, z);
+        }
     }
 }

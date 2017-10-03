@@ -19,21 +19,19 @@ public class TringleTest
     public void CalcNormalTest()
     {
         //arrange
-        Point p0 = new Point(0, 0, 0);
-        Point p1 = new Point(0, 0, 1);
-        Point p2 = new Point(0, 0, -1);
+        Point p0 = new Point(1, -1, 0);
+        Point p1 = new Point(1, 1, 0);
+        Point p2 = new Point(-1, 1, 0);
         Triangle T = new Triangle(p0, p1, p2);
-#warning "Bence! számold ki hogy jó értéket adj meg!"
-        Point p3 = new Point(0, 0, 0);
-        Point p4 = new Point(0, 0, 0);
-
-        Vector V = new Vector(p3, p4);
+        Point V = new Point(0, 0, 1);
 
         //act
-        Vector N = T.normal;
+        Point N = T.normal.End;
 
         //assert
-        Assert.AreEqual(V, N);
+        Assert.AreEqual(V.x, N.x);
+        Assert.AreEqual(V.y, N.y);
+        Assert.AreEqual(V.z, N.z);
     }
 
     [TestMethod]

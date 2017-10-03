@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="Icosahedron.cs" />
     <Compile Include="LightSource.cs" />
     <Compile Include="MyExceptions.cs" />
     <Compile Include="MyXMLReader.cs" />
@@ -55,7 +56,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene.cs" />
-    <Compile Include="Sphere.cs" />
     <Compile Include="Triangle.cs" />
     <Compile Include="Vector.cs" />
   </ItemGroup>
