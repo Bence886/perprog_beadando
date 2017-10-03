@@ -38,12 +38,13 @@ namespace LightFinder
 
             for (int i = 0; i < points.Length - 3; i++)
             {
+# ittabaj!
                 temp.AddRange(subdivide(points[i], points[i + 1], points[i + 2], subdiv));
             }
 
             points = temp.ToArray();
 
-            StreamWriter sw = new StreamWriter("asd.txt");
+            StreamWriter sw = new StreamWriter("asd.txt", false);
             for (int i = 0; i < points.Length; i++)
             {
                 sw.WriteLine(points[i].ToFile());
@@ -61,7 +62,7 @@ namespace LightFinder
             ret.Add(v12);
             ret.Add(v23);
             ret.Add(v31);
-
+            
             if (depth != 0)
             {
                 ret.AddRange(subdivide(v1, v12, v31, depth - 1));
