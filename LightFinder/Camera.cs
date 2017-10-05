@@ -20,7 +20,7 @@ namespace LightFinder
 
         public void Init()
         {
-            Icosahedronn = new Icosahedron(Origin, 2);
+            Icosahedronn = new Icosahedron(Origin, 3);
             GenerateLookDirections(
                 new Vector(
                     new Point(0, 0, 0), Origin), 10);
