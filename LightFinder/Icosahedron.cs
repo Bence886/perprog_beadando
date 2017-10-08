@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LightFinder
 {
@@ -29,12 +25,13 @@ namespace LightFinder
         public Icosahedron(Point o, int subdiv)
         {
             Center = o;
+
+            points = StartSubdiv(subdiv).ToArray();
+
             for (int i = 0; i < points.Length; i++)
             {
                 points[i] += o;
             }
-
-            points = StartSubdiv(subdiv).ToArray();
 
             StreamWriter sw = new StreamWriter("asd.txt", false);
             for (int i = 0; i < points.Length; i++)
@@ -45,16 +42,16 @@ namespace LightFinder
         }
 
         private List<Point> StartSubdiv(int subdiv)
-        {//csúnyademegy minden sornál meghalt egy kiscica :'(
+        {//csúnyademegy, minden sornál meghalt egy kiscica :'(
             List<Point> temp = new List<Point>();
-            #region kuka
-            /*temp.AddRange(subdivide(points[0], points[4], points[1], subdiv));
+
+            temp.AddRange(subdivide(points[0], points[4], points[1], subdiv));
             temp.AddRange(subdivide(points[0], points[9], points[4], subdiv));
             temp.AddRange(subdivide(points[9], points[5], points[4], subdiv));
             temp.AddRange(subdivide(points[4], points[5], points[8], subdiv));
             temp.AddRange(subdivide(points[4], points[8], points[1], subdiv));
 
-            temp.AddRange(subdivide(points[4], points[10], points[1], subdiv));
+            temp.AddRange(subdivide(points[8], points[10], points[1], subdiv));
             temp.AddRange(subdivide(points[8], points[3], points[10], subdiv));
             temp.AddRange(subdivide(points[5], points[3], points[8], subdiv));
             temp.AddRange(subdivide(points[5], points[2], points[3], subdiv));
@@ -66,61 +63,31 @@ namespace LightFinder
             temp.AddRange(subdivide(points[11], points[0], points[6], subdiv));
             temp.AddRange(subdivide(points[0], points[1], points[6], subdiv));
 
-            temp.AddRange(subdivide(points[4], points[1], points[10], subdiv));
+            temp.AddRange(subdivide(points[6], points[1], points[10], subdiv));
             temp.AddRange(subdivide(points[9], points[0], points[11], subdiv));
             temp.AddRange(subdivide(points[9], points[11], points[2], subdiv));
-            temp.AddRange(subdivide(points[9], points[2], points[0], subdiv));
-            temp.AddRange(subdivide(points[7], points[2], points[11], subdiv));*/
-            #endregion kuka
+            temp.AddRange(subdivide(points[9], points[2], points[5], subdiv));
+            temp.AddRange(subdivide(points[7], points[2], points[11], subdiv));
 
-            int[][] tindices = {
-                     new int[] {0,4,1},
-                     new int[] { 0,9,4},
-                     new int[] { 9,5,4},
-                     new int[] { 4,5,8},
-                     new int[] { 4,8,1},
-                     new int[] { 8,10,1},
-                     new int[] { 8,3,10},
-                     new int[] { 5,3,8},
-                     new int[] { 5,2,3},
-                     new int[] { 2,7,3},
-                     new int[] { 7,10,3},
-                     new int[] { 7,6,10},
-                     new int[] { 7,11,6},
-                     new int[] { 11,0,6},
-                     new int[] { 0,1,6},
-                     new int[] { 6,1,10},
-                     new int[] { 9,0,11},
-                     new int[] { 9,11,2},
-                     new int[] { 9,2,5},
-                     new int[] { 7,2,11}
-                 };
-            for (int i = 0; i < 20; i++)
-            {
-                temp = subdivide(
-                    points[tindices[i][0]],
-                    points[tindices[i][1]],
-                    points[tindices[i][2]],
-                    subdiv);
-            }
+            /*var a = new HashSet<Point>(temp);
+            temp = new List<Point>(a);*/
             return temp;
         }
 
         List<Point> subdivide(Point v1, Point v2, Point v3, long depth)
         {
             List<Point> ret = new List<Point>();
-            Point v12 = v1 + v2;
-            Point v23 = v2 + v3;
-            Point v31 = v3 + v1;
+            Point v12 = Point.GetMiddlePoint(v1, v2);
+            Point v23 = Point.GetMiddlePoint(v2, v3);
+            Point v31 = Point.GetMiddlePoint(v3, v1);
 
-            ret.Add(v1);
-            ret.Add(v2);
-            ret.Add(v3);
+            if (depth == 0)
+            {
+                ret.Add(v1);
+                ret.Add(v2);
+                ret.Add(v3);
+            }
 
-            v12.normalize();
-            v23.normalize();
-            v31.normalize();
-            
             if (depth != 0)
             {
                 ret.AddRange(subdivide(v1, v12, v31, depth - 1));
@@ -128,7 +95,6 @@ namespace LightFinder
                 ret.AddRange(subdivide(v3, v31, v23, depth - 1));
                 ret.AddRange(subdivide(v12, v23, v31, depth - 1));
             }
-
             return ret;
         }
     }

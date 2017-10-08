@@ -6,16 +6,12 @@ using System.Threading.Tasks;
 
 namespace LightFinder
 {
-    class DegenerateTringle : ApplicationException
+    class NoHit : ApplicationException
     {
-    }
-    class LineParalelWithTriengle : ApplicationException
-    {
-    }
-    class WrongDirection : ApplicationException
-    {
-    }
-    class RayOutsideTriangle : ApplicationException
-    {
+        string message;
+        public NoHit(string msg)
+        {
+            message = msg;
+        }
     }
 }

@@ -10,75 +10,68 @@ namespace LightFinder
     {
         public Triangle(Point p1, Point p2, Point p3)
         {
-            this.p1 = p1;
-            this.p2 = p2;
-            this.p3 = p3;
+            this.p0 = p1;
+            this.p1 = p2;
+            this.p2 = p3;
             CalcNormal();
         }
 
+        public Point p0 { get; set; }
         public Point p1 { get; set; }
         public Point p2 { get; set; }
-        public Point p3 { get; set; }
         public Vector normal { get; set; }
 
         private void CalcNormal()
         {//https://math.stackexchange.com/questions/305642/how-to-find-surface-normal-of-a-triangle
-            Point u = (p2 - p1);
-            Point v = (p3 - p1);
+            Point u = (p1 - p0);
+            Point v = (p2 - p0);
 
             float Nx, Ny, Nz;
             Nx = (u.y * v.z - u.z * v.y);
             Ny = (u.z * v.x - u.x * v.z);
             Nz = (u.x * v.z - u.y * v.x);
-            
+
             normal = new Vector(new Point(0, 0, 0), new Point(Nx, Ny, Nz));
-            normal.ConvertToUnitVector();            
+            normal.ConvertToUnitVector();
         }
 
         public Point InsideTringle(Vector ray)
         {//http://geomalgorithms.com/a06-_intersect-2.html
-            Vector u, v, n;
-            Vector w0, w;
-            float r, a, b;
+         //http://www.lighthouse3d.com/tutorials/maths/ray-triangle-intersection/
+            Point e1, e2, h, s, q;
+            float a, f, u, v;
+            e1 = p1 - p0;
+            e2 = p2 - p0;
+            h = Point.CrossProduct(ray.End, e2);
+            a = Point.InnerProduct(e1, h);
 
-            u = new Vector(p1 - p3);
-            v = new Vector(p2 - p3);
-            n = Vector.CrossProduct(u, v);
-
-            if (n.Length() == 0)
+            if (a > -0.00001 && a < 0.00001)
             {
-                throw new DegenerateTringle();
+                throw new NoHit("Paralel");
             }
-            w0 = new Vector(ray.End - p3);
-            a = -Vector.DotProduct(n, w0);
-            b = Vector.DotProduct(n, ray);
-            if (Math.Abs(b) < 0.00000001)
-            {
-                if (a == 0)
-                {
-                    throw new LineParalelWithTriengle();
-                }
-            }
-            r = a / b;
-            if (r < 0.0)
-            {
-                throw new WrongDirection();
-            }
-            Point I;
-            Vector dir = ray;
-            dir.MultiplyByLambda(r);
-            I = ray.End + dir.End;
 
-            float uu, uv, vv, wu, wv, D;
-            uu = Vector.DotProduct(u, u);
-            uv = Vector.DotProduct(u, v);
-            vv = Vector.DotProduct(v, v);
-            w = new Vector(I, p1);
-            wu = Vector.DotProduct(w, u);
-            wv = Vector.DotProduct(w, v);
-            D = uv * uv - uu * vv;
+            f = 1 / a;
+            s = ray.Start - p0;
+            u = f * (Point.InnerProduct(s, h));
+            if (u < 0.0 || u > 1.0)
+            {
+                throw new NoHit("Wrong Direction");
+            }
 
-            return I;
+            q = Point.CrossProduct(s, e1);
+
+            v = f * Point.InnerProduct(ray.End, q);
+            if (v < 0.0 || u + v > 1.0)
+            { }
+            float t = f * Point.InnerProduct(e2, q);
+            if (t > 0.00001)
+            {
+                return new Point(
+                    ray.Start.x + ray.End.x * t,
+                    ray.Start.y + ray.End.y * t,
+                    ray.Start.z + ray.End.z * t);
+            }
+            throw new NoHit("Miss");
         }
     }
 }

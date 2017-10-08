@@ -54,10 +54,23 @@ namespace LightFinder
             float d = (float)Math.Sqrt(x * x + y * y + z * z);
             if (d != 0)
             {
-                x /= d;
-                y /= d;
-                z /= d;
+                DevideByLambda(d);
             }
+        }
+
+        public static Point GetMiddlePoint(Point a, Point b)
+        {
+            Point midle;
+            midle = a + b;
+            midle.DevideByLambda(2);
+            midle.normalize();
+
+            return midle;
+        }
+
+        public static float InnerProduct(Point v, Point q)
+        {//http://www.lighthouse3d.com/tutorials/maths/inner-product/
+            return v.x * q.x + v.y * q.y + v.z * q.z;
         }
 
         public string ToFile()
@@ -65,6 +78,17 @@ namespace LightFinder
             NumberFormatInfo nfi = new NumberFormatInfo();
             nfi.NumberDecimalSeparator = ".";
             return string.Format("({0}, {1}, {2}),", x.ToString(nfi), y.ToString(nfi), z.ToString(nfi));
+        }
+
+        public override bool Equals(object obj)
+        {
+            Point o = (Point)obj;
+            return x == o.x && y == o.y && z == o.z;
+        }
+
+        public static Point CrossProduct(Point b, Point c)
+        {//http://www.lighthouse3d.com/tutorials/maths/vector-cross-product/
+            return new Point(b.y * c.z - c.y * b.z, b.z * b.x - c.z * b.x, b.x * c.y - c.x * b.y);
         }
     }
 }

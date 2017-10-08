@@ -37,16 +37,15 @@ public class TringleTest
     [TestMethod]
     public void InsideTringle()
     {
-        Point p0 = new Point(1, -1, 0);
-        Point p1 = new Point(1, 1, 0);
-        Point p2 = new Point(-1, -1, 0);
+        Point p0 = new Point(1, -1, 3);
+        Point p1 = new Point(1, 1, 3);
+        Point p2 = new Point(-1, -1, 3);
         Triangle T = new Triangle(p0, p1, p2);
-#warning "Bence! számold ki hogy jó értéket adj meg!"
-        Point p3 = new Point(0.33f, 0.33f, -1);
-        Point p4 = new Point(0.33f, 0.33f, 1);
+        Point p3 = new Point(0, 0, 0);
+        Point p4 = new Point(0.4f, 0.4f, 1);
 
         Vector V = new Vector(p3, p4);
-        Point R = new Point(0.33f, 0.33f, 0);
+        Point R = new Point(0.4f, 0.4f, 1);
 
         Point H = T.InsideTringle(V);
 
