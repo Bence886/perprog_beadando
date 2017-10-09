@@ -49,7 +49,7 @@ namespace LightFinder
             return String.Format("X:{0}, Y:{1}, Z:{2}", x, y, z);
         }
 
-        public void normalize()
+        public void Normalize()
         {
             float d = (float)Math.Sqrt(x * x + y * y + z * z);
             if (d != 0)
@@ -63,7 +63,7 @@ namespace LightFinder
             Point midle;
             midle = a + b;
             midle.DevideByLambda(2);
-            midle.normalize();
+            midle.Normalize();
 
             return midle;
         }
@@ -83,7 +83,15 @@ namespace LightFinder
         public override bool Equals(object obj)
         {
             Point o = (Point)obj;
-            return x == o.x && y == o.y && z == o.z;
+            float epsilon = 0.0001f;
+            return CompFloat(x, o.x, epsilon)
+                && CompFloat(y, o.y, epsilon) 
+                && CompFloat(z, o.z, epsilon);
+        }
+
+        private bool CompFloat(float a, float b, float epsilon)
+        {
+            return Math.Abs(a - b) < epsilon;
         }
 
         public static Point CrossProduct(Point b, Point c)
