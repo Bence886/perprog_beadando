@@ -88,7 +88,7 @@ namespace LightFinder
 
         public static Point CrossProduct(Point b, Point c)
         {//http://www.lighthouse3d.com/tutorials/maths/vector-cross-product/
-            return new Point(b.y * c.z - c.y * b.z, b.z * b.x - c.z * b.x, b.x * c.y - c.x * b.y);
+            return new Point(b.y * c.z - c.y * b.z, b.z * c.x - c.z * b.x, b.x * c.y - c.x * b.y);
         }
     }
 }

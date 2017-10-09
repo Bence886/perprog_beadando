@@ -42,7 +42,7 @@ namespace LightFinder
             float a, f, u, v;
             e1 = p1 - p0;
             e2 = p2 - p0;
-            h = Point.CrossProduct(ray.End, e2);
+            h = Point.CrossProduct(ray.End-ray.Start, e2);
             a = Point.InnerProduct(e1, h);
 
             if (a > -0.00001 && a < 0.00001)
@@ -60,16 +60,18 @@ namespace LightFinder
 
             q = Point.CrossProduct(s, e1);
 
-            v = f * Point.InnerProduct(ray.End, q);
+            v = f * Point.InnerProduct(ray.End-ray.Start, q);
             if (v < 0.0 || u + v > 1.0)
-            { }
+            {
+                throw new NoHit("Wrong Direction");
+            }
             float t = f * Point.InnerProduct(e2, q);
             if (t > 0.00001)
             {
                 return new Point(
-                    ray.Start.x + ray.End.x * t,
-                    ray.Start.y + ray.End.y * t,
-                    ray.Start.z + ray.End.z * t);
+                    ray.Start.x + (ray.End - ray.Start).x * t,
+                    ray.Start.y + (ray.End - ray.Start).y * t,
+                    ray.Start.z + (ray.End - ray.Start).z * t);
             }
             throw new NoHit("Miss");
         }

@@ -80,6 +80,7 @@ namespace LightFinder
 
             var a = new HashSet<Point>(temp);
             temp = new List<Point>(a);
+
             return temp;
         }
 
