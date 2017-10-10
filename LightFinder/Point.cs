@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LightFinder
 {
-    public class Point
+    public class Point:IEquatable<Point>
     {
         public float x { get; set; }
         public float y { get; set; }
@@ -97,6 +97,11 @@ namespace LightFinder
         public static Point CrossProduct(Point b, Point c)
         {//http://www.lighthouse3d.com/tutorials/maths/vector-cross-product/
             return new Point(b.y * c.z - c.y * b.z, b.z * c.x - c.z * b.x, b.x * c.y - c.x * b.y);
+        }
+        
+        public bool Equals(Point other)
+        {
+            return this.Equals(other);
         }
     }
 }
