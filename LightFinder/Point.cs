@@ -99,9 +99,12 @@ namespace LightFinder
             return new Point(b.y * c.z - c.y * b.z, b.z * c.x - c.z * b.x, b.x * c.y - c.x * b.y);
         }
         
-        public bool Equals(Point other)
+        public bool Equals(Point o)
         {
-            return this.Equals(other);
+            float epsilon = 0.0001f;
+            return CompFloat(x, o.x, epsilon)
+                && CompFloat(y, o.y, epsilon)
+                && CompFloat(z, o.z, epsilon);
         }
     }
 }

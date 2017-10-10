@@ -33,7 +33,7 @@ namespace LightFinder
                  new int[] {7, 2, 11}
              };
 
-        Point[] points = {
+        public Point[] points = {
                 new Point(-0.525731112119133606f, 0.0f, 0.850650808352039932f),
                 new Point(0.525731112119133606f, 0.0f, 0.850650808352039932f),
                 new Point(-0.525731112119133606f, 0.0f, -0.850650808352039932f),
@@ -60,13 +60,6 @@ namespace LightFinder
             {
                 points[i] += o;
             }
-
-            StreamWriter sw = new StreamWriter("asd.txt", false);
-            for (int i = 0; i < points.Length; i++)
-            {
-                sw.WriteLine(points[i].ToFile());
-            }
-            sw.Close();
         }
 
         private List<Point> StartSubdiv(int subdiv)
@@ -93,12 +86,12 @@ namespace LightFinder
 
             if (depth == 0)
             {
-                if(ret.Contains(v1))
-                ret.Add(v1);
-                if(ret.Contains(v2))
-                ret.Add(v2);
-                if(ret.Contains(v3))
-                ret.Add(v3);
+                if(!ret.Contains(v1))
+                    ret.Add(v1);
+                if(!ret.Contains(v2))
+                    ret.Add(v2);
+                if(!ret.Contains(v3))
+                    ret.Add(v3);
             }
 
             if (depth != 0)

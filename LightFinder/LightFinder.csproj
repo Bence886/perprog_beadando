@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="CreateBlenderScript.cs" />
     <Compile Include="Icosahedron.cs" />
     <Compile Include="LightSource.cs" />
     <Compile Include="MyExceptions.cs" />

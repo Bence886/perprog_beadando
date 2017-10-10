@@ -12,6 +12,14 @@ namespace LightFinder
         static void Main(string[] args)
         {
             Scene s = new Scene("in.xml");
+
+            CreateBlenderScript bs = new CreateBlenderScript("Blender.txt");
+            foreach (Camera item in s.Cameras)
+            {
+                bs.CreateObject(item.Icosahedronn.points.ToList(), "Camera");
+            }
+
+            bs.Close();
         }
     }
 }
