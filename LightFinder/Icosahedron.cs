@@ -93,8 +93,11 @@ namespace LightFinder
 
             if (depth == 0)
             {
+                if(ret.Contains(v1))
                 ret.Add(v1);
+                if(ret.Contains(v2))
                 ret.Add(v2);
+                if(ret.Contains(v3))
                 ret.Add(v3);
             }
 
