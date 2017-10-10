@@ -68,40 +68,37 @@ namespace LightFinder
 
             for (int i = 0; i < TriangleIndicies.Length; i++)
             {
-                temp.AddRange(subdivide(points[TriangleIndicies[i][0]], points[TriangleIndicies[i][1]], points[TriangleIndicies[i][2]], subdiv));
+                subdivide(points[TriangleIndicies[i][0]], points[TriangleIndicies[i][1]], points[TriangleIndicies[i][2]], subdiv, ref temp);
             }
-
-            var a = new HashSet<Point>(temp);
-            temp = new List<Point>(a);
 
             return temp;
         }
 
-        List<Point> subdivide(Point v1, Point v2, Point v3, long depth)
+        void subdivide(Point v1, Point v2, Point v3, long depth, ref List<Point> ret)
         {
-            List<Point> ret = new List<Point>();
+            //List<Point> ret = new List<Point>();
             Point v12 = Point.GetMiddlePoint(v1, v2);
             Point v23 = Point.GetMiddlePoint(v2, v3);
             Point v31 = Point.GetMiddlePoint(v3, v1);
 
             if (depth == 0)
             {
-                if(!ret.Contains(v1))
+                if (!ret.Contains(v1))
                     ret.Add(v1);
-                if(!ret.Contains(v2))
+                if (!ret.Contains(v2))
                     ret.Add(v2);
-                if(!ret.Contains(v3))
+                if (!ret.Contains(v3))
                     ret.Add(v3);
             }
 
             if (depth != 0)
             {
-                ret.AddRange(subdivide(v1, v12, v31, depth - 1));
-                ret.AddRange(subdivide(v2, v23, v12, depth - 1));
-                ret.AddRange(subdivide(v3, v31, v23, depth - 1));
-                ret.AddRange(subdivide(v12, v23, v31, depth - 1));
+                subdivide(v1, v12, v31, depth - 1, ref ret);
+                subdivide(v2, v23, v12, depth - 1, ref ret);
+                subdivide(v3, v31, v23, depth - 1, ref ret);
+                subdivide(v12, v23, v31, depth - 1, ref ret);
             }
-            return ret;
+            //return ret;
         }
     }
 }

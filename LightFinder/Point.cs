@@ -101,7 +101,7 @@ namespace LightFinder
         
         public bool Equals(Point o)
         {
-            float epsilon = 0.0001f;
+            float epsilon = 0.001f;
             return CompFloat(x, o.x, epsilon)
                 && CompFloat(y, o.y, epsilon)
                 && CompFloat(z, o.z, epsilon);
