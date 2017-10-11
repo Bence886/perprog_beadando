@@ -51,6 +51,7 @@
     <Compile Include="CreateBlenderScript.cs" />
     <Compile Include="Icosahedron.cs" />
     <Compile Include="LightSource.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="MyExceptions.cs" />
     <Compile Include="MyXMLReader.cs" />
     <Compile Include="Point.cs" />

@@ -24,12 +24,12 @@ namespace LightFinder
 
         private void InitCameras()
         {
-            Console.WriteLine("Started Cameras init");
+            Log.WriteLog("Started Cameras init", LogType.Console, LogLevel.Trace);
             foreach (Camera item in Cameras)
             {
                 item.Init();
             }
-            Console.WriteLine("Finished Cameras init");
+            Log.WriteLog("Finished Cameras init", LogType.Console, LogLevel.Trace);
         }
 
         public void StartTrace()
@@ -40,32 +40,31 @@ namespace LightFinder
             }
         }
 
-        private float Trace(Vector akt)
+        public void Trace()
         {
             foreach (Camera item in Cameras)
             {
                 item.StartTrace(Lights, Triangles);
             }
-            throw new NotImplementedException();
         }
 
         private void CreateFloor(float z)
         {
             Triangles.Add(new Triangle(new Point(100, -100, 0), new Point(100, 100, 0), new Point(-100, 100, 0)));
             Triangles.Add(new Triangle(new Point(-100, 100, 0), new Point(-100, -100, 0), new Point(100, -100, 0)));
-            Console.WriteLine("Created floors");
+            Log.WriteLog("Created floors", LogType.Console, LogLevel.Debug);
         }
 
         private void ReadInputFile(string filename)
         {
             MyXMLReader x = new MyXMLReader(filename);
-            Console.WriteLine("Opened xml");
+            Log.WriteLog("Opened xml", LogType.Console, LogLevel.Trace);
             Triangles = x.GetTriangles();
-            Console.WriteLine("Loaded triangles");
+            Log.WriteLog("Loaded triangles", LogType.Console, LogLevel.Trace);
             Lights = x.GetLights();
-            Console.WriteLine("Loaded lights");
+            Log.WriteLog("Loaded lights", LogType.Console, LogLevel.Trace);
             Cameras = x.GetCameras();
-            Console.WriteLine("Loaded cameras");
+            Log.WriteLog("Loaded cameras", LogType.Console, LogLevel.Trace);
         }
     }
 }

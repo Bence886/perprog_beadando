@@ -47,7 +47,7 @@ namespace LightFinder
 
             if (a > -0.00001 && a < 0.00001)
             {
-                throw new NoHit("Paralel");
+                throw new NoHit();
             }
 
             f = 1 / a;
@@ -55,7 +55,7 @@ namespace LightFinder
             u = f * (Point.InnerProduct(s, h));
             if (u < 0.0 || u > 1.0)
             {
-                throw new NoHit("Wrong Direction");
+                throw new NoHit();
             }
 
             q = Point.CrossProduct(s, e1);
@@ -63,7 +63,7 @@ namespace LightFinder
             v = f * Point.InnerProduct(ray.End-ray.Start, q);
             if (v < 0.0 || u + v > 1.0)
             {
-                throw new NoHit("Wrong Direction");
+                throw new NoHit();
             }
             float t = f * Point.InnerProduct(e2, q);
             if (t > 0.00001)
@@ -73,7 +73,7 @@ namespace LightFinder
                     ray.Start.y + (ray.End - ray.Start).y * t,
                     ray.Start.z + (ray.End - ray.Start).z * t);
             }
-            throw new NoHit("Miss");
+            throw new NoHit();
         }
     }
 }

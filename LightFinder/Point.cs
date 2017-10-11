@@ -98,6 +98,11 @@ namespace LightFinder
         {//http://www.lighthouse3d.com/tutorials/maths/vector-cross-product/
             return new Point(b.y * c.z - c.y * b.z, b.z * c.x - c.z * b.x, b.x * c.y - c.x * b.y);
         }
+
+        public static float Distance(Point a, Point b)
+        {
+            return (float)Math.Sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z));
+        }
         
         public bool Equals(Point o)
         {

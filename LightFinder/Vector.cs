@@ -76,5 +76,10 @@ namespace LightFinder
             Point a = End - Start;
             return (float)Math.Sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
         }
+
+        public override string ToString()
+        {
+            return string.Format("Start:{0}, End.{1}", Start.ToString(), End.ToString());
+        }
     }
 }

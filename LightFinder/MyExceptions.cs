@@ -8,10 +8,5 @@ namespace LightFinder
 {
     class NoHit : ApplicationException
     {
-        string message;
-        public NoHit(string msg)
-        {
-            message = msg;
-        }
     }
 }

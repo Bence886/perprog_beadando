@@ -39,7 +39,7 @@ namespace LightFinderTest
         public void Equality()
         {
             Point a = new Point(0, 0, 0);
-            Point b = new Point(0.01f, 0, 0);
+            Point b = new Point(0.0001f, 0, 0);
 
             bool e = a.Equals(b);
 
@@ -51,11 +51,22 @@ namespace LightFinderTest
         {
             List<Point> pl = new List<Point>();
             pl.Add(new Point(0, 0, 0));
-            Point p1 = new Point(0.01f, 0, 0);
+            Point p1 = new Point(0.0001f, 0, 0);
 
             bool e = !pl.Contains(p1);
 
             Assert.IsFalse(e);
+        }
+
+        [TestMethod]
+        public void Distance()
+        {
+            Point a = new Point(0, 0, 0);
+            Point b = new Point(1, 0, 0);
+
+            float d = Point.Distance(a, b);
+
+            Assert.AreEqual(1, d);
         }
     }
 }
