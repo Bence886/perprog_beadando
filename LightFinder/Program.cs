@@ -11,7 +11,7 @@ namespace LightFinder
     {
         static void Main(string[] args)
         {
-            Log.CurrentLogLevel = LogLevel.Message;
+            Log.CurrentLogLevel = LogLevel.Trace;
             Log.AllConsole = true;
 
             Scene s = new Scene("in.xml");
