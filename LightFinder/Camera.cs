@@ -42,25 +42,29 @@ namespace LightFinder
             {
                 return 0;
             }
-            List<Point> hitpoint = new List<Point>();
             Point closest = ray.Start;
+            Triangle hitTriangle = triengles.First();
             foreach (Triangle item in triengles)
             {
                 try
                 {
-                    hitpoint.Add(item.InsideTringle(ray));
+                    Point hit = item.InsideTringle(ray);
+                    if ( hit == ray.Start || Point.Distance(ray.Start, hit) > Point.Distance(ray.Start, closest))
+                    {
+                        hitTriangle = item;
+                        closest = hit;
+                    }
                 }
                 catch (NoHit)
                 {
                     Log.WriteLog(string.Format("Ray: {0}, \t missed: {1}", ray.ToString(), item.ToString()), LogType.File, LogLevel.Debug);
                 }
             }
-            closest = hitpoint.Where(y => Point.Distance(y, ray.Start) == hitpoint.Select(x => Point.Distance(x, ray.Start)).Min()).FirstOrDefault();
             if (closest == null)
             {
                 return 0;
             }
-            Point newRay = GeneratePointOnSphere(closest); //halfsphere
+            Point newRay = GeneratePointOnHalfSphere(closest, hitTriangle); //halfsphere
         }
 
         private Point GeneratePointOnSphere(Point origin)
