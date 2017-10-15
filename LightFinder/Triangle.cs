@@ -19,7 +19,7 @@ namespace LightFinder
         public Point p0 { get; set; }
         public Point p1 { get; set; }
         public Point p2 { get; set; }
-        public Vector normal { get; set; }
+        public Point normal { get; set; }
 
         private void CalcNormal()
         {//https://math.stackexchange.com/questions/305642/how-to-find-surface-normal-of-a-triangle
@@ -31,8 +31,8 @@ namespace LightFinder
             Ny = (u.z * v.x - u.x * v.z);
             Nz = (u.x * v.z - u.y * v.x);
 
-            normal = new Vector(new Point(0, 0, 0), new Point(Nx, Ny, Nz));
-            normal.ConvertToUnitVector();
+            normal =  new Point(Nx, Ny, Nz);
+            normal.Normalize();
         }
 
         public Point InsideTringle(Vector ray)

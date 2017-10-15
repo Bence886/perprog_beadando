@@ -26,7 +26,26 @@ public class TringleTest
         Point V = new Point(0, 0, 1);
 
         //act
-        Point N = T.normal.End;
+        Point N = T.normal;
+
+        //assert
+        Assert.AreEqual(V.x, N.x);
+        Assert.AreEqual(V.y, N.y);
+        Assert.AreEqual(V.z, N.z);
+    }
+
+    [TestMethod]
+    public void CalcNormalTest2()
+    {
+        //arrange
+        Point p0 = new Point(-1, 0, 0);
+        Point p1 = new Point(0, 0, 1);
+        Point p2 = new Point(1, 0, 0);
+        Triangle T = new Triangle(p0, p1, p2);
+        Point V = new Point(0, 1, 0);
+
+        //act
+        Point N = T.normal;
 
         //assert
         Assert.AreEqual(V.x, N.x);

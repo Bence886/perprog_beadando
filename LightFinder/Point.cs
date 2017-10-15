@@ -103,7 +103,12 @@ namespace LightFinder
         {
             return (float)Math.Sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z));
         }
-        
+
+        public float Lenght()
+        {
+            return Distance(new Point(0, 0, 0), this);
+        }
+
         public bool Equals(Point o)
         {
             float epsilon = 0.001f;

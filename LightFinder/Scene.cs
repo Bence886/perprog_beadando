@@ -19,17 +19,6 @@ namespace LightFinder
             Cameras = new List<Camera>();
             ReadInputFile(filename);
             CreateFloor(-1);
-            InitCameras();
-        }
-
-        private void InitCameras()
-        {
-            Log.WriteLog("Started Cameras init", LogType.Console, LogLevel.Trace);
-            foreach (Camera item in Cameras)
-            {
-                item.Init();
-            }
-            Log.WriteLog("Finished Cameras init", LogType.Console, LogLevel.Trace);
         }
 
         public void StartTrace()

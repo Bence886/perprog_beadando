@@ -17,5 +17,9 @@ namespace LightFinder
         public Point Location { get; set; }
         public float Intensity { get; set; }
 
+        public Point IntersectLight(Vector ray)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

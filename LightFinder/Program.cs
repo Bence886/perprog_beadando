@@ -17,11 +17,8 @@ namespace LightFinder
             Scene s = new Scene("in.xml");
             Log.WriteLog("Scene initialized!", LogType.Console, LogLevel.Message);
             CreateBlenderScript bs = new CreateBlenderScript("Blender.txt");
-            foreach (Camera item in s.Cameras)
-            {
-                bs.CreateObject(item.LookDirections.ToList(), "Camera");
-            }
-            foreach (Triangle item in s.Triangles)
+
+            /*foreach (Triangle item in s.Triangles)
             {
                 bs.CreateObject(new List<Point> { item.p0, item.p1, item.p2} ,"Object");
             }
@@ -29,6 +26,7 @@ namespace LightFinder
             {
                 bs.CreateObject(new List<Point> { item.Location}, "Light");
             }
+            */
 
             s.StartTrace();
             Log.WriteLog("Trace finished", LogType.Console, LogLevel.Message);
