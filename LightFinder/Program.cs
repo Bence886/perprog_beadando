@@ -11,14 +11,15 @@ namespace LightFinder
     {
         static void Main(string[] args)
         {
-            Log.CurrentLogLevel = LogLevel.Trace;
-            Log.AllConsole = true;
+            Log.CurrentLogLevel = LogLevel.Debug;
+            Log.AllConsole = false;
+            Log.FileLog = false;
 
             Scene s = new Scene("in.xml");
             Log.WriteLog("Scene initialized!", LogType.Console, LogLevel.Message);
             CreateBlenderScript bs = new CreateBlenderScript("Blender.txt");
 
-            /*foreach (Triangle item in s.Triangles)
+            foreach (Triangle item in s.Triangles)
             {
                 bs.CreateObject(new List<Point> { item.p0, item.p1, item.p2} ,"Object");
             }
@@ -26,7 +27,6 @@ namespace LightFinder
             {
                 bs.CreateObject(new List<Point> { item.Location}, "Light");
             }
-            */
 
             s.StartTrace();
             Log.WriteLog("Trace finished", LogType.Console, LogLevel.Message);
@@ -38,7 +38,7 @@ namespace LightFinder
             bs.Close();
             Log.CloseWriter();
             Console.WriteLine("Program finished!");
-            Console.ReadKey();
+            //Console.ReadKey();
         }
     }
 }

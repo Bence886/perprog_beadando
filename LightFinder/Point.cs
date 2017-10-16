@@ -37,6 +37,11 @@ namespace LightFinder
             z *= a;
         }
 
+        public static float DotProduct(Point u, Point v)
+        {
+            return (u.x * v.x + u.y * v.y + u.z * v.z);
+        }
+
         public void DevideByLambda(float a)
         {
             x /= a;

@@ -20,7 +20,7 @@ namespace LightFinder
             LookDirections = new List<Point>();
             Origin = b.End;
             Dept = 4;
-            Sampling = 1000;
+            Sampling = 50;
         }
 
         public void Init()
@@ -30,56 +30,81 @@ namespace LightFinder
 
         public void StartTrace(List<LightSource> lights, List<Triangle> triengles)
         {
+            List<Task> T = new List<Task>();
             for (int i = 0; i < Sampling; i++)
             {
-                Point ray = GeneratePointOnSphere(Origin);
+                Task t = Task.Run(()=> TheradStarter(lights, triengles));
+                T.Add(t);
+                /*Point ray = GeneratePointOnSphere(Origin);
                 ray.MultiplyByLambda(Trace(lights, triengles, new Vector(Origin, ray), 0));
-                LookDirections.Add(ray);
+                if (!LookDirections.Contains(ray))
+                {
+                    lock (lockObject)
+                    {
+                        LookDirections.Add(ray);
+                    }
+                }*/
+            }
+            Task.WaitAll(T.ToArray());
+        }
+
+        private static object lockObject = new object();
+        private void TheradStarter(List<LightSource> lights, List<Triangle> triengles)
+        {
+            Point ray = GeneratePointOnSphere(Origin);
+            ray.MultiplyByLambda(Trace(lights, triengles, new Vector(Origin, ray), 0));
+            if (!LookDirections.Contains(ray))
+            {
+                lock (lockObject)
+                {
+                    LookDirections.Add(ray);
+                }
             }
         }
 
-        private int Trace(List<LightSource> lights, List<Triangle> triengles, Vector ray, int dept)
+        private float Trace(List<LightSource> lights, List<Triangle> triengles, Vector ray, int dept)
         {
-             if (dept == Dept)
-             {
-                 return 0;
-             }
-             Point closest = ray.Start;
-             Triangle hitTriangle = triengles.First();
-             foreach (Triangle item in triengles)
-             {
-                 try
-                 {
-                     Point hit = item.InsideTringle(ray);
-                     if ( hit == ray.Start || Point.Distance(ray.Start, hit) > Point.Distance(ray.Start, closest))
-                     {
-                         hitTriangle = item;
-                         closest = hit;
-                     }
-                 }
-                 catch (NoHit)
-                 {
-                     Log.WriteLog(string.Format("Ray: {0}, \t missed: {1}", ray.ToString(), item.ToString()), LogType.File, LogLevel.Debug);
-                 }
-             }
-             if (closest == null && closest == ray.Start)
-             {
-                 return 0;
-             }
-
-             Point lightHit = ray.Start;
-             foreach (LightSource item in lights)
-             {
-                 lightHit = item.IntersectLight(ray);
-                //add valami
-             }
-
-             for (int i = 0; i < Sampling; i++)
-             {
-                 Vector newRay = new Vector(closest, GeneratePointOnHalfSphere(closest, hitTriangle)); //halfsphere
-                 Trace(lights, triengles, newRay, dept+1);
-             }
-             //return valami
+            if (dept == Dept)
+            {
+                return 0;
+            }
+            Point closest = ray.Start;
+            Triangle hitTriangle = triengles.First();
+            foreach (Triangle item in triengles)
+            {
+                try
+                {
+                    Point hit = item.InsideTringle(ray);
+                    if (hit == ray.Start || Point.Distance(ray.Start, hit) > Point.Distance(ray.Start, closest))
+                    {
+                        hitTriangle = item;
+                        closest = hit;
+                    }
+                }
+                catch (NoHit)
+                {
+                    Log.WriteLog(string.Format("Dept: {2} Ray: {0}, \t missed: {1}", ray.ToString(), item.ToString(), dept), LogType.File, LogLevel.Trace);
+                }
+            }
+            float value = 0;
+            foreach (LightSource item in lights)
+            {
+                if (Point.Distance(item.Location, ray.Start) < Point.Distance(closest, ray.Start) && item.IntersectLight(ray))
+                {
+                    value += item.Intensity;
+                    Log.WriteLog(string.Format("Dept: {2} Ray: {0}, \t hit: {1}", ray.ToString(), item.ToString(), dept), LogType.File, LogLevel.Debug);
+                }
+            }
+            if (closest == null && closest == ray.Start)
+            {
+                return 0;
+            }
+            for (int i = 0; i < Sampling; i++)
+            {
+                Vector newRay = new Vector(closest, GeneratePointOnHalfSphere(closest, hitTriangle));
+                Trace(lights, triengles, newRay, dept + 1);
+            }
+            return value;
         }
 
         private Point GeneratePointOnHalfSphere(Point closest, Triangle hitTriangle)
@@ -93,7 +118,7 @@ namespace LightFinder
             x = (float)rnd.NextDouble() * (1 - (-1)) + (-1);
             y = (float)rnd.NextDouble() * (1 - (-1)) + (-1);
             z = (float)rnd.NextDouble();
-            
+
             Point randomPoint = new Point(
             x * direction.x + y * cross.x + z * normal.x,
             x * direction.y + y * cross.y + z * normal.y,
@@ -107,7 +132,7 @@ namespace LightFinder
         private Point GeneratePointOnSphere(Point origin)
         {
             Point randomPoint = new Point((float)rnd.NextDouble() * (1 - (-1)) + (-1), (float)rnd.NextDouble() * (1 - (-1)) + (-1), (float)rnd.NextDouble() * (1 - (-1)) + (-1));
-            while (randomPoint.Lenght() > 0)
+            while (randomPoint.Lenght() > 1)
             {
                 randomPoint = new Point((float)rnd.NextDouble() * (1 - (-1)) + (-1), (float)rnd.NextDouble() * (1 - (-1)) + (-1), (float)rnd.NextDouble() * (1 - (-1)) + (-1));
             }

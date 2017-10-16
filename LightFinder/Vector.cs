@@ -16,12 +16,6 @@ namespace LightFinder
             Start = s;
             End = e;
         }
-
-        public Vector(Point a)
-        {
-            Start = new Point(0, 0, 0);
-            End = a;
-        }
         
         public void DevideByLambda(float b)
         {
