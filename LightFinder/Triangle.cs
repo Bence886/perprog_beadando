@@ -25,13 +25,17 @@ namespace LightFinder
         {//https://math.stackexchange.com/questions/305642/how-to-find-surface-normal-of-a-triangle
             Point u = (p1 - p0);
             Point v = (p2 - p0);
-
-            float Nx, Ny, Nz;
+            /*
+            float Nx, Ny, Nz, Ax, Ay, Az;
             Nx = (u.y * v.z - u.z * v.y);
             Ny = (u.z * v.x - u.x * v.z);
-            Nz = (u.x * v.z - u.y * v.x);
+            Nz = (u.x * v.y - u.y * v.x);
 
-            normal =  new Point(Nx, Ny, Nz);
+            Ax = Nx / (Math.Abs(Nx) + Math.Abs(Ny) + Math.Abs(Nz));
+            Ay = Ny / (Math.Abs(Nx) + Math.Abs(Ny) + Math.Abs(Nz));
+            Az = Nz / (Math.Abs(Nx) + Math.Abs(Ny) + Math.Abs(Nz));
+            */
+            normal = Point.CrossProduct(u, v);//new Point(Ax, Ay, Az);
             normal.Normalize();
         }
 
@@ -42,7 +46,7 @@ namespace LightFinder
             float a, f, u, v;
             e1 = p1 - p0;
             e2 = p2 - p0;
-            h = Point.CrossProduct(ray.End-ray.Start, e2);
+            h = Point.CrossProduct(ray.End - ray.Start, e2);
             a = Point.InnerProduct(e1, h);
 
             if (a > -0.00001 && a < 0.00001)
@@ -60,7 +64,7 @@ namespace LightFinder
 
             q = Point.CrossProduct(s, e1);
 
-            v = f * Point.InnerProduct(ray.End-ray.Start, q);
+            v = f * Point.InnerProduct(ray.End - ray.Start, q);
             if (v < 0.0 || u + v > 1.0)
             {
                 throw new NoHit();

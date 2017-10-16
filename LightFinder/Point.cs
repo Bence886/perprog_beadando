@@ -54,7 +54,7 @@ namespace LightFinder
             float d = (float)Math.Sqrt(x * x + y * y + z * z);
             if (d != 0)
             {
-                DevideByLambda(d);
+                DevideByLambda(Math.Abs(d));
             }
         }
 

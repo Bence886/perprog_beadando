@@ -54,6 +54,25 @@ public class TringleTest
     }
 
     [TestMethod]
+    public void CalcNormalTest3()
+    {
+        //arrange
+        Point p0 = new Point(1, 1, 0);
+        Point p1 = new Point(1, -1, 1);
+        Point p2 = new Point(-1, -1, 0);
+        Triangle T = new Triangle(p0, p1, p2);
+        Point V = new Point(-(1/(float)Math.Sqrt(2)), 1 / (float)Math.Sqrt(2), 0);
+
+        //act
+        Point N = T.normal;
+
+        //assert
+        Assert.AreEqual(V.x, N.x);
+        Assert.AreEqual(V.y, N.y);
+        Assert.AreEqual(V.z, N.z);
+    }
+
+    [TestMethod]
     public void InsideTringle()
     {
         Point p0 = new Point(10, -10, 3);
