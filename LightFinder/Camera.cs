@@ -32,13 +32,7 @@ namespace LightFinder
         {
             for (int i = 0; i < Sampling; i++)
             {
-                Point ray = GeneratePointOnHalfSphere(Origin,
-                    new Triangle(
-                        new Point(1, 1, 1),
-                        new Point(1, -1, 1),
-                        new Point(-1, -1, 0)
-                        ));
-
+                Point ray = GeneratePointOnSphere(Origin);
                 ray.MultiplyByLambda(Trace(lights, triengles, new Vector(Origin, ray), 0));
                 LookDirections.Add(ray);
             }
@@ -46,7 +40,7 @@ namespace LightFinder
 
         private int Trace(List<LightSource> lights, List<Triangle> triengles, Vector ray, int dept)
         {
-            /* if (dept == Dept)
+             if (dept == Dept)
              {
                  return 0;
              }
@@ -77,14 +71,15 @@ namespace LightFinder
              foreach (LightSource item in lights)
              {
                  lightHit = item.IntersectLight(ray);
+                //add valami
              }
 
              for (int i = 0; i < Sampling; i++)
              {
                  Vector newRay = new Vector(closest, GeneratePointOnHalfSphere(closest, hitTriangle)); //halfsphere
                  Trace(lights, triengles, newRay, dept+1);
-             }*/
-            return 1;
+             }
+             //return valami
         }
 
         private Point GeneratePointOnHalfSphere(Point closest, Triangle hitTriangle)
