@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LightFinder
 {
-    public class Point:IEquatable<Point>
+    public class Point : IEquatable<Point>
     {
         public float x { get; set; }
         public float y { get; set; }
@@ -90,7 +90,7 @@ namespace LightFinder
             Point o = (Point)obj;
             float epsilon = 0.0001f;
             return CompFloat(x, o.x, epsilon)
-                && CompFloat(y, o.y, epsilon) 
+                && CompFloat(y, o.y, epsilon)
                 && CompFloat(z, o.z, epsilon);
         }
 
