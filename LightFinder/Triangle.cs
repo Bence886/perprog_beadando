@@ -79,5 +79,38 @@ namespace LightFinder
             }
             throw new NoHit();
         }
+
+        public override string ToString()
+        {
+            return string.Format("Triangle x:{0}, y:{1}, z:{2}",p0.ToString(), p1.ToString(), p2.ToString());
+        }
+
+        public static Triangle ClosestTriangleHit(List<Triangle> triengles, Vector ray)
+        {
+            Point closest = null;
+            Triangle hitTriangle = null;
+            foreach (Triangle item in triengles)
+            {
+                try
+                {
+                    Point hit = item.InsideTringle(ray);
+                    if (closest == null || Point.Distance(ray.Start, hit) < Point.Distance(ray.Start, closest))
+                    {
+                        hitTriangle = item;
+                        closest = hit;
+                    }
+                }
+                catch (NoHit)
+                {
+                }
+            }
+            if (hitTriangle == null)
+            {
+                Log.WriteLog("No triangle hit.", LogType.Console, LogLevel.Trace);
+                throw new NoHit();
+            }
+            Log.WriteLog(string.Format("Closest Trianglehit at: {0}", hitTriangle.ToString()), LogType.Console, LogLevel.Trace);
+            return hitTriangle;
+        }
     }
 }

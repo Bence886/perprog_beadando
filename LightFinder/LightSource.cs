@@ -12,9 +12,8 @@ namespace LightFinder
         {
             Location = location;
             Intensity = intensity;
-        }
 
-        private float rad = 0.01f;
+        }
 
         public Point Location { get; set; }
         public float Intensity { get; set; }
@@ -23,11 +22,30 @@ namespace LightFinder
         {
             Point op = Location - ray.Start;
             float b = Point.DotProduct(op, ray.End);
-            float disc = b * b - Point.DotProduct(op, op) + rad * rad;
+            float disc = b * b - Point.DotProduct(op, op) + Intensity * Intensity;
             if (disc < 0)
                 return false;
             else disc = (float)Math.Sqrt(disc);
             return true;
+        }
+
+        public static LightSource LightHit(List<LightSource> lights, Vector ray)
+        {
+            LightSource closest = null;
+            foreach (LightSource item in lights)
+            {
+                if (item.IntersectLight(ray) && (closest == null || Point.Distance(item.Location, ray.Start) < Point.Distance(closest.Location, ray.Start)))
+                {
+                    closest = item;
+                }
+            }
+            if (closest == null)
+            {
+                Log.WriteLog("No Light hit.", LogType.Console, LogLevel.Trace);
+                throw new NoHit();
+            }
+            Log.WriteLog(string.Format("Closest Light at: {0}", closest.ToString()), LogType.Console, LogLevel.Trace);
+            return closest;
         }
 
         public override string ToString()
