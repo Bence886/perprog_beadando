@@ -121,5 +121,40 @@ namespace LightFinder
                 && CompFloat(y, o.y, epsilon)
                 && CompFloat(z, o.z, epsilon);
         }
+
+        static Random rnd = new Random();
+        public static Point GeneratePointOnHalfSphere(Point offset, Triangle hitTriangle)
+        {
+            Point normal = hitTriangle.normal;
+            Point direction = Point.CrossProduct(normal, hitTriangle.p1 - hitTriangle.p0);
+            direction.Normalize();
+            Point cross = Point.CrossProduct(normal, direction);
+
+            float x, y, z;
+            x = (float)rnd.NextDouble() * (1 - (-1)) + (-1);
+            y = (float)rnd.NextDouble() * (1 - (-1)) + (-1);
+            z = (float)rnd.NextDouble();
+
+            Point randomPoint = new Point(
+            x * direction.x + y * cross.x + z * normal.x,
+            x * direction.y + y * cross.y + z * normal.y,
+            x * direction.z + y * cross.z + z * normal.z);
+
+            randomPoint.Normalize();
+            randomPoint = randomPoint + offset;
+            return randomPoint;
+        }
+
+        public static Point GeneratePointOnSphere(Point origin)
+        {
+            Point randomPoint = new Point((float)rnd.NextDouble() * (1 - (-1)) + (-1), (float)rnd.NextDouble() * (1 - (-1)) + (-1), (float)rnd.NextDouble() * (1 - (-1)) + (-1));
+            while (randomPoint.Lenght() > 1)
+            {
+                randomPoint = new Point((float)rnd.NextDouble() * (1 - (-1)) + (-1), (float)rnd.NextDouble() * (1 - (-1)) + (-1), (float)rnd.NextDouble() * (1 - (-1)) + (-1));
+            }
+            randomPoint.Normalize();
+            randomPoint = randomPoint + origin;
+            return randomPoint;
+        }
     }
 }
