@@ -123,7 +123,7 @@ namespace LightFinder
         }
 
         static Random rnd = new Random();
-        public static Point GeneratePointOnHalfSphere(Point closest, Triangle hitTriangle)
+        public static Point GeneratePointOnHalfSphere(Point offset, Triangle hitTriangle)
         {
             Point normal = hitTriangle.normal;
             Point direction = Point.CrossProduct(normal, hitTriangle.p1 - hitTriangle.p0);
@@ -141,7 +141,7 @@ namespace LightFinder
             x * direction.z + y * cross.z + z * normal.z);
 
             randomPoint.Normalize();
-            randomPoint = randomPoint + closest;
+            randomPoint = randomPoint + offset;
             return randomPoint;
         }
 

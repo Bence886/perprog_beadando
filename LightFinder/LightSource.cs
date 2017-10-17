@@ -12,9 +12,8 @@ namespace LightFinder
         {
             Location = location;
             Intensity = intensity;
-
         }
-
+        
         public Point Location { get; set; }
         public float Intensity { get; set; }
 
@@ -29,7 +28,7 @@ namespace LightFinder
             return true;
         }
 
-        public static LightSource LightHit(List<LightSource> lights, Vector ray)
+        public static LightSource ClosestLightHit(List<LightSource> lights, Vector ray)
         {
             LightSource closest = null;
             foreach (LightSource item in lights)
