@@ -20,7 +20,7 @@ namespace LightFinder
             LookDirections = new List<Point>();
             Origin = b.End;
             MaxDept = 4;
-            Sampling = 100;
+            Sampling = 1000;
         }
 
         public void Init()
@@ -78,6 +78,9 @@ namespace LightFinder
                 Point pointHit = null;
                 pointHit = triangleHit.InsideTringle(ray);
                 float value = 0;
+                Point offset = triangleHit.normal;
+                offset.DevideByLambda(1000);
+                pointHit += offset;
                 for (int i = 0; i < Sampling; i++)
                 {
                     Vector vector = new Vector(pointHit, Point.GeneratePointOnHalfSphere(pointHit, triangleHit));
