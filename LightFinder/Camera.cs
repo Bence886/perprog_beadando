@@ -20,7 +20,7 @@ namespace LightFinder
             LookDirections = new List<Point>();
             Origin = b.End;
             MaxDept = 4;
-            Sampling = 30;
+            Sampling = 20;
         }
 
         public void Init()
@@ -82,7 +82,9 @@ namespace LightFinder
                 offset.MultiplyByLambda(-1);
                 offset.DevideByLambda(1000);
                 pointHit += offset;
-                bool backfacing = Point.DotProduct(triangleHit.normal, ray.End) > 0;
+                Point rayDirection = ray.End - ray.Start;
+                rayDirection.Normalize();
+                bool backfacing = Point.DotProduct(triangleHit.normal, rayDirection) > 0;
                 for (int i = 0; i < Sampling; i++)
                 {
                     Vector vector = new Vector(pointHit, Point.GeneratePointOnHalfSphere(pointHit, triangleHit, backfacing));
