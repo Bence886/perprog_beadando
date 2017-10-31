@@ -19,8 +19,8 @@ namespace LightFinder
 
         public bool IntersectLight(Vector ray)
         {
-            Point op = Location - ray.Start;
-            float b = Point.DotProduct(op, ray.End);
+            Point op = Location - ray.Location;
+            float b = Point.DotProduct(op, ray.Direction);
             float disc = b * b - Point.DotProduct(op, op) + Intensity * Intensity;
             if (disc < 0)
                 return false;
@@ -33,7 +33,7 @@ namespace LightFinder
             LightSource closest = null;
             foreach (LightSource item in lights)
             {
-                if (item.IntersectLight(ray) && (closest == null || Point.Distance(item.Location, ray.Start) < Point.Distance(closest.Location, ray.Start)))
+                if (item.IntersectLight(ray) && (closest == null || Point.Distance(item.Location, ray.Location) < Point.Distance(closest.Location, ray.Location)))
                 {
                     closest = item;
                 }

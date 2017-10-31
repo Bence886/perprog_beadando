@@ -18,9 +18,9 @@ namespace LightFinder
         public Camera(Vector b)
         {
             LookDirections = new List<Point>();
-            Origin = b.End;
+            Origin = b.Location;
             MaxDept = 4;
-            Sampling = 20;
+            Sampling = 10;
         }
 
         public void Init()
@@ -39,9 +39,9 @@ namespace LightFinder
                 Vector vector = new Vector(Origin, ray);
                 float a = Trace(lights, triengles, ref vector, 0);
                 ray.MultiplyByLambda(a);
-                if (!LookDirections.Contains(vector.End))
+                if (!LookDirections.Contains(vector.GetEndPoint()))
                 {
-                    LookDirections.Add(vector.End);
+                    LookDirections.Add(vector.GetEndPoint());
                 }
                 bs.CreateObject(TracePoints, "TracePath");
             }
@@ -57,11 +57,12 @@ namespace LightFinder
             LightSource light = null;
             foreach (LightSource item in lights)
             {
-                light = LightHitBeforeTriangle(item, triengles, new Vector(ray.Start, item.Location));
+                light = LightHitBeforeTriangle(item, triengles, new Vector(ray.Location, item.Location));
             }
             if (light != null)
             {
-                ray.End = light.Location;
+                ray.Direction = light.Location;
+                ray.Direction.Normalize();
                 return light.Intensity;
             }
             else
@@ -78,20 +79,18 @@ namespace LightFinder
                 Point pointHit = null;
                 pointHit = triangleHit.InsideTringle(ray);
                 float value = 0;
-                Point offset = ray.End;
+                Point offset = ray.Direction;
                 offset.MultiplyByLambda(-1);
                 offset.DevideByLambda(1000);
                 pointHit += offset;
-                Point rayDirection = ray.End - ray.Start;
-                rayDirection.Normalize();
-                bool backfacing = Point.DotProduct(triangleHit.normal, rayDirection) > 0;
+                bool backfacing = Point.DotProduct(triangleHit.normal, ray.Direction) > 0;
                 for (int i = 0; i < Sampling; i++)
                 {
-                    Vector vector = new Vector(pointHit, Point.GeneratePointOnHalfSphere(pointHit, triangleHit, backfacing));
-                    value = Trace(lights, triengles, ref vector, dept + 1);
-                    if (!TracePoints.Contains(vector.End))
+                    Vector newRay = new Vector(pointHit, Point.GeneratePointOnHalfSphere(triangleHit, backfacing));
+                    value = Trace(lights, triengles, ref newRay, dept + 1);
+                    if (!TracePoints.Contains(newRay.GetEndPoint()))
                     {
-                        TracePoints.Add(vector.End);
+                        TracePoints.Add(newRay.GetEndPoint());
                     }
                 }
                 return value;
@@ -112,7 +111,7 @@ namespace LightFinder
             if (triangleHit != null)
             {
                 pointHit = triangleHit.InsideTringle(ray);
-                if (Point.Distance(lightHit.Location, ray.Start) < Point.Distance(pointHit, ray.Start))
+                if (Point.Distance(lightHit.Location, ray.Location) < Point.Distance(pointHit, ray.Location))
                 {
                     return lightHit;
                 }
