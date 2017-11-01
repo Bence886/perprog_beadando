@@ -15,10 +15,10 @@ namespace LightFinder
         public int MaxDept { get; set; }
         static Random rnd = new Random();
 
-        public Camera(Vector b)
+        public Camera(Point b)
         {
             LookDirections = new List<Point>();
-            Origin = b.Location;
+            Origin = b;
             MaxDept = 4;
             Sampling = 10;
         }
@@ -55,14 +55,18 @@ namespace LightFinder
                 return 0;
             }
             LightSource light = null;
+            Point rayToLight;
             foreach (LightSource item in lights)
             {
-                light = LightHitBeforeTriangle(item, triengles, new Vector(ray.Location, item.Location));
+                rayToLight = item.Location - ray.Location;
+                rayToLight.Normalize();
+                light = LightHitBeforeTriangle(item, triengles, new Vector(ray.Location, rayToLight));
             }
             if (light != null)
             {
-                ray.Direction = light.Location;
-                ray.Direction.Normalize();
+                Point temp = light.Location - ray.Location;
+                temp.Normalize();
+                ray.Direction = temp;
                 return light.Intensity;
             }
             else
@@ -79,11 +83,10 @@ namespace LightFinder
                 Point pointHit = null;
                 pointHit = triangleHit.InsideTringle(ray);
                 float value = 0;
-                Point offset = ray.Direction;
-                offset.MultiplyByLambda(-1);
-                offset.DevideByLambda(1000);
+                Point offset = ray.GetEndPoint();
+                offset.MultiplyByLambda(-0.0001f);
                 pointHit += offset;
-                bool backfacing = Point.DotProduct(triangleHit.normal, ray.Direction) > 0;
+                bool backfacing = Point.DotProduct(triangleHit.Normal, ray.Direction) > 0;
                 for (int i = 0; i < Sampling; i++)
                 {
                     Vector newRay = new Vector(pointHit, Point.GeneratePointOnHalfSphere(triangleHit, backfacing));
@@ -106,7 +109,8 @@ namespace LightFinder
                 triangleHit = Triangle.ClosestTriangleHit(triengles, ray);
             }
             catch (NoHit)
-            {}
+            {
+            }
             Point pointHit = null;
             if (triangleHit != null)
             {
@@ -121,11 +125,6 @@ namespace LightFinder
                 }
             }
             return light;
-        }
-
-        public Vector GetBrightestLightDirection()
-        {//ez nem lesz jó
-            return new Vector(Icosahedronn.Center, LookDirections.Where(x => x == LookDirections.Max()).SingleOrDefault());
         }
     }
 }

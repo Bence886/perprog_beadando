@@ -21,7 +21,7 @@ namespace LightFinder
 
             foreach (Triangle item in s.Triangles)
             {
-                bs.CreateObject(new List<Point> { item.p0, item.p1, item.p2} ,"Object");
+                bs.CreateObject(new List<Point> { item.P0, item.P1, item.P2} ,"Object");
             }
             foreach (LightSource item in s.Lights)
             {

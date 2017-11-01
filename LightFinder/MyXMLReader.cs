@@ -37,10 +37,7 @@ namespace LightFinder
             var cams = xDoc.Descendants("branches");
             foreach (XElement item in cams.Elements())
             {
-                ret.Add(new Camera(
-                    new Vector(
-                        new Point(float.Parse(item.Attribute("startx").Value), float.Parse(item.Attribute("starty").Value), float.Parse(item.Attribute("startz").Value)), 
-                        new Point(float.Parse(item.Attribute("endx").Value), float.Parse(item.Attribute("endy").Value), float.Parse(item.Attribute("endz").Value)))));
+                ret.Add(new Camera(new Point(float.Parse(item.Attribute("startx").Value), float.Parse(item.Attribute("starty").Value), float.Parse(item.Attribute("startz").Value))));
             }
 
             return ret;
