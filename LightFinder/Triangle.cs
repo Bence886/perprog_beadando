@@ -76,11 +76,11 @@ namespace LightFinder
             return string.Format("Triangle x:{0}, y:{1}, z:{2}",P0.ToString(), P1.ToString(), P2.ToString());
         }
 
-        public static Triangle ClosestTriangleHit(List<Triangle> triengles, Vector ray)
+        public static Triangle ClosestTriangleHit(List<Triangle> triangles, Vector ray)
         {
             Point closest = null;
             Triangle hitTriangle = null;
-            foreach (Triangle item in triengles)
+            foreach (Triangle item in triangles)
             {
                 try
                 {

@@ -126,7 +126,7 @@ namespace LightFinder
         static Random rnd = new Random();
         public static Point GeneratePointOnHalfSphere(Triangle hitTriangle, bool backfacing)
         {
-            Point normal = hitTriangle.Normal;
+            Point normal = new Point(hitTriangle.Normal.X, hitTriangle.Normal.Y, hitTriangle.Normal.Z);
             if (backfacing)
             {
                 normal.MultiplyByLambda(-1);

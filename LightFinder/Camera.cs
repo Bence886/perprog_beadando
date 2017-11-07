@@ -15,6 +15,8 @@ namespace LightFinder
         public int MaxDept { get; set; }
         static Random rnd = new Random();
 
+        static object lockObj = new object();
+
         public Camera(Point b)
         {
             LookDirections = new List<Point>();
@@ -23,32 +25,36 @@ namespace LightFinder
             Sampling = 10;
         }
 
-        public void Init()
+        CreateBlenderScript bs = new CreateBlenderScript("BlenderTrace.txt");
+        public void StartTrace(List<LightSource> lights, List<Triangle> triangles)
         {
-            Icosahedronn = new Icosahedron(Origin, 3);
-        }
-
-        List<Point> TracePoints;
-        public void StartTrace(List<LightSource> lights, List<Triangle> triengles)
-        {
-            CreateBlenderScript bs = new CreateBlenderScript("BlenderTrace.txt");
+            List<Task> tasks = new List<Task>();
             for (int i = 0; i < Sampling; i++)
             {
-                TracePoints = new List<Point>();
-                Point ray = Point.GeneratePointOnSphere(Origin);
-                Vector vector = new Vector(Origin, ray);
-                float a = Trace(lights, triengles, ref vector, 0);
-                ray.MultiplyByLambda(a);
-                if (!LookDirections.Contains(vector.GetEndPoint()))
-                {
-                    LookDirections.Add(vector.GetEndPoint());
-                }
-                bs.CreateObject(TracePoints, "TracePath");
+                Task t = Task.Run(() => TaskMethod(lights, triangles));
+                tasks.Add(t);
             }
+
+            Task.WaitAll(tasks.ToArray());
             bs.Close();
         }
 
-        private float Trace(List<LightSource> lights, List<Triangle> triengles,ref Vector ray, int dept)
+        public void TaskMethod(List<LightSource> lights, List<Triangle> triangles)
+        {
+            Point ray = Point.GeneratePointOnSphere(Origin);
+            Vector vector = new Vector(Origin, ray);
+            float a = Trace(lights, triangles, ref vector, 0);
+            ray.MultiplyByLambda(a);
+            if (!LookDirections.Contains(vector.GetEndPoint()))
+            {
+                lock (lockObj)
+                {
+                    LookDirections.Add(vector.GetEndPoint());
+                }
+            }
+        }
+
+        private float Trace(List<LightSource> lights, List<Triangle> triangles, ref Vector ray, int dept)
         {
             if (dept == MaxDept)
             {
@@ -60,7 +66,7 @@ namespace LightFinder
             {
                 rayToLight = item.Location - ray.Location;
                 rayToLight.Normalize();
-                light = LightHitBeforeTriangle(item, triengles, new Vector(ray.Location, rayToLight));
+                light = LightHitBeforeTriangle(item, triangles, new Vector(ray.Location, rayToLight));
             }
             if (light != null)
             {
@@ -74,39 +80,42 @@ namespace LightFinder
                 Triangle triangleHit = null;
                 try
                 {
-                    triangleHit = Triangle.ClosestTriangleHit(triengles, ray);
+                    triangleHit = Triangle.ClosestTriangleHit(triangles, ray);
                 }
                 catch (NoHit)
                 {
                     return 0;
                 }
                 Point pointHit = null;
+
                 pointHit = triangleHit.InsideTringle(ray);
                 float value = 0;
                 Point offset = ray.GetEndPoint();
                 offset.MultiplyByLambda(-0.0001f);
                 pointHit += offset;
                 bool backfacing = Point.DotProduct(triangleHit.Normal, ray.Direction) > 0;
+                List<Point> TracePoints = new List<Point>();
                 for (int i = 0; i < Sampling; i++)
                 {
                     Vector newRay = new Vector(pointHit, Point.GeneratePointOnHalfSphere(triangleHit, backfacing));
-                    value = Trace(lights, triengles, ref newRay, dept + 1);
+                    value = Trace(lights, triangles, ref newRay, dept + 1);
                     if (!TracePoints.Contains(newRay.GetEndPoint()))
                     {
                         TracePoints.Add(newRay.GetEndPoint());
                     }
                 }
+                bs.CreateObject(TracePoints, "TracePath");
                 return value;
             }
         }
 
-        private LightSource LightHitBeforeTriangle(LightSource light, List<Triangle> triengles, Vector ray)
+        private LightSource LightHitBeforeTriangle(LightSource light, List<Triangle> triangles, Vector ray)
         {
             LightSource lightHit = light;
             Triangle triangleHit = null;
             try
             {
-                triangleHit = Triangle.ClosestTriangleHit(triengles, ray);
+                triangleHit = Triangle.ClosestTriangleHit(triangles, ray);
             }
             catch (NoHit)
             {
