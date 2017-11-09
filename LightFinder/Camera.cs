@@ -21,8 +21,8 @@ namespace LightFinder
         {
             LookDirections = new List<Point>();
             Origin = b;
-            MaxDept = 2;
-            Sampling = 100;
+            MaxDept = 3;
+            Sampling = 10;
         }
 
         CreateBlenderScript bs = new CreateBlenderScript("BlenderTrace.txt");
@@ -56,10 +56,6 @@ namespace LightFinder
 
         private float Trace(List<LightSource> lights, List<Triangle> triangles, ref Vector ray, int dept)
         {
-            if (dept == MaxDept)
-            {
-                return 0;
-            }
             LightSource light = null;
             Point rayToLight;
             foreach (LightSource item in lights)
@@ -86,27 +82,31 @@ namespace LightFinder
                 {
                     return 0;
                 }
-                Point pointHit = null;
-
-                pointHit = triangleHit.InsideTringle(ray);
                 float value = 0;
-                Point offset = ray.GetEndPoint();
-                offset.MultiplyByLambda(-0.0001f);
-                pointHit += offset;
-                bool backfacing = Point.DotProduct(triangleHit.Normal, ray.Direction) > 0;
-                List<Point> TracePoints = new List<Point>();
-                for (int i = 0; i < Sampling; i++)
+
+                if (dept + 1 != MaxDept)
                 {
-                    Vector newRay = new Vector(pointHit, Point.GeneratePointOnHalfSphere(triangleHit, backfacing));
-                    value = Trace(lights, triangles, ref newRay, dept + 1);
-                    if (!TracePoints.Contains(newRay.GetEndPoint()))
+                    Point pointHit = null;
+
+                    pointHit = triangleHit.InsideTringle(ray);
+                    Point offset = ray.GetEndPoint();
+                    offset.MultiplyByLambda(-0.0001f);
+                    pointHit += offset;
+                    bool backfacing = Point.DotProduct(triangleHit.Normal, ray.Direction) > 0;
+                    List<Point> TracePoints = new List<Point>();
+                    for (int i = 0; i < Sampling; i++)
                     {
-                        TracePoints.Add(newRay.GetEndPoint());
+                        Vector newRay = new Vector(pointHit, Point.GeneratePointOnHalfSphere(triangleHit, backfacing));
+                        value = Trace(lights, triangles, ref newRay, dept + 1);
+                        if (!TracePoints.Contains(newRay.GetEndPoint()))
+                        {
+                            TracePoints.Add(newRay.GetEndPoint());
+                        }
                     }
-                }
-                lock (lockObj)
-                {
-                    bs.CreateObject(TracePoints, "TracePath");
+                    lock (lockObj)
+                    {
+                        bs.CreateObject(TracePoints, "TracePath");
+                    }
                 }
                 return value;
             }
