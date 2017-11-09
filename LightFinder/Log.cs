@@ -14,9 +14,10 @@ namespace LightFinder
         public static LogLevel CurrentLogLevel = LogLevel.Error;
 
         private static StreamWriter log = new StreamWriter("Log.txt", false);
-        private static StreamWriter trace = new StreamWriter("Trace.txt", false);
 
         public static bool AllConsole = false;
+
+        public static bool FileLog { get; set; } = true;
 
         public static void WriteLog(string message, LogType type, LogLevel level)
         {
@@ -26,15 +27,16 @@ namespace LightFinder
                 {
                     Console.WriteLine(level + " : " + message);
                 }
-                log.WriteLine(DateTime.Now.TimeOfDay + " : " + level + " : " + message);
+                if (FileLog)
+                {
+                    log.WriteLine(DateTime.Now.TimeOfDay + " : " + level + " : " + message);
+                }
             }
-            trace.WriteLine(DateTime.Now.TimeOfDay + " : " + level + " : " + message);
         }
 
         public static void CloseWriter()
         {
             log.Close();
-            trace.Close();
         }
     }
 }

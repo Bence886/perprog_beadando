@@ -1,5 +1,5 @@
 ﻿using LightFinder;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace LightFinderTest
 {
-    [TestClass]
+    [TestFixture]
     public class PointTest
     {
-        [TestMethod]
+        [Test]
         public void InnerProduct()
         {
             Point a = new Point(1, 2, 3);
@@ -19,23 +19,25 @@ namespace LightFinderTest
             float ex = 32;
 
             float c = Point.InnerProduct(a, b);
-            
+
             Assert.AreEqual(ex, c);
         }
 
-        [TestMethod]
-        public void CrossProduct()
+        [TestCase(1, 2, 3, 4, 5, 6, -3, 6, -3)]
+        [TestCase(6, 9, 2, 3, 7, 5, 31, -24, 15)]
+        [Test]
+        public void CrossProduct(float a, float b, float c, float d, float e, float f, float g, float h, float i)
         {
-            Point a = new Point(1, 2, 3);
-            Point b = new Point(4, 5, 6);
-            Point ex = new Point(-3, 6, -3);
+            Point v1 = new Point(a, b, c);
+            Point v2 = new Point(d, e, f);
+            Point ex = new Point(g, h, i);
 
-            Point c = Point.CrossProduct(a, b);
+            Point v3 = Point.CrossProduct(v1, v2);
 
-            Assert.AreEqual(ex, c);
+            Assert.AreEqual(ex, v3);
         }
 
-        [TestMethod]
+        [Test]
         public void Equality()
         {
             Point a = new Point(0, 0, 0);
@@ -46,7 +48,7 @@ namespace LightFinderTest
             Assert.IsTrue(e);
         }
 
-        [TestMethod]
+        [Test]
         public void ListContains()
         {
             List<Point> pl = new List<Point>();
@@ -58,7 +60,7 @@ namespace LightFinderTest
             Assert.IsFalse(e);
         }
 
-        [TestMethod]
+        [Test]
         public void Distance()
         {
             Point a = new Point(0, 0, 0);

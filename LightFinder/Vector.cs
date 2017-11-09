@@ -8,78 +8,85 @@ namespace LightFinder
 {
     public class Vector
     {
-        public Point Start { get; set; }
-        public Point End { get; set; }
-
-        public Vector(Point s, Point e)
+        public Point Location { get; set; }
+        private Point direction;
+        public Point Direction
         {
-            Start = s;
-            End = e;
+            get
+            {
+                return direction;
+            }
+
+            set
+            {
+                if (Point.CompFloat(value.Lenght(), 1.0f, 0.0001f))
+                {
+                    direction = value;
+                }
+                else
+                {
+                    throw new  FormatException("Not a Unit Vector!");
+                }
+            }
+        }
+        public int Length { get; set; }
+
+        public Vector(Point p, Point d)
+        {
+            Location = p;
+            Direction = d;
+            Length = 1;
         }
 
-        public Vector(Point a)
+        public Point GetEndPoint()
         {
-            Start = new Point(0, 0, 0);
-            End = a;
+            Point ret = Direction;
+            ret.MultiplyByLambda(Length);
+            ret += Location;
+            return ret;
         }
-        
+
         public void DevideByLambda(float b)
         {
-            End.x /= b;
-            End.y /= b;
-            End.z /= b;
+            Location.X /= b;
+            Location.Y /= b;
+            Location.Z /= b;
         }
 
-        public static Vector operator-(Vector a, Vector b)
+        public static Vector operator -(Vector a, Vector b)
         {
-            return new Vector(a.Start-b.Start, a.End-b.End);
+            return new Vector(a.Location - b.Location, a.Direction - b.Direction);
         }
 
         public static Vector operator +(Vector a, Vector b)
         {
-            return new Vector(a.Start + b.Start, a.End + b.End);
+            return new Vector(a.Location + b.Location, a.Direction + b.Direction);
         }
 
-        public static Vector CrossProduct(Vector v0, Vector v1)
+        public static Point CrossProduct(Vector v0, Vector v1)
         {
-            Point u = v1.End;
-            Point v = v1.End;
+            Point u = v1.Direction;
+            Point v = v1.Direction;
 
-            Point p = new Point((u.y * v.z - u.z * v.y), (u.z * v.x - u.x * v.z), (u.x * v.z - u.y * v.x));
+            Point p = Point.CrossProduct(u, v);
 
-            Vector V = new Vector(new Point(0, 0, 0), p);
-            V.DevideByLambda(V.Length());
-            return V;
-        }
-
-        public void ConvertToUnitVector()
-        {
-            float l = Length();
-            DevideByLambda(l);
+            return p;
         }
 
         public static float DotProduct(Vector v0, Vector v1)
         {
-            Point u=v0.End, v=v1.End;
-            return (u.x * v.x + u.y * v.y + u.z * v.z);
+            Point u = v0.Direction, v = v1.Direction;
+            return (u.X * v.X + u.Y * v.Y + u.Z * v.Z);
         }
 
         public void MultiplyByLambda(float f)
         {
-            End.x *= f;
-            End.y *= f;
-            End.z *= f;
-        }
-
-        public float Length()
-        {
-            Point a = End - Start;
-            return (float)Math.Sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+            Direction.MultiplyByLambda(f);
         }
 
         public override string ToString()
         {
-            return string.Format("Start:{0}, End.{1}", Start.ToString(), End.ToString());
+            return string.Format("Location:{0}, Direction.{1}, Length:{2}", Location.ToString(), Direction.ToString(), Length);
         }
     }
 }
