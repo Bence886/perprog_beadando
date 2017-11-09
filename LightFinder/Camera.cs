@@ -21,8 +21,8 @@ namespace LightFinder
         {
             LookDirections = new List<Point>();
             Origin = b;
-            MaxDept = 4;
-            Sampling = 10;
+            MaxDept = 2;
+            Sampling = 100;
         }
 
         CreateBlenderScript bs = new CreateBlenderScript("BlenderTrace.txt");
@@ -104,7 +104,10 @@ namespace LightFinder
                         TracePoints.Add(newRay.GetEndPoint());
                     }
                 }
-                bs.CreateObject(TracePoints, "TracePath");
+                lock (lockObj)
+                {
+                    bs.CreateObject(TracePoints, "TracePath");
+                }
                 return value;
             }
         }
