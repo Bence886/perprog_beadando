@@ -11,6 +11,7 @@ namespace LightFinder
     enum LogLevel { Trace, Debug, Message, Error, Warning }
     static class Log
     {
+        static object lockObject = new object();
         public static LogLevel CurrentLogLevel = LogLevel.Error;
 
         private static StreamWriter log = new StreamWriter("Log.txt", false);
@@ -23,13 +24,16 @@ namespace LightFinder
         {
             if (level >= CurrentLogLevel)
             {
-                if (type == LogType.Console || AllConsole)
+                lock (lockObject)
                 {
-                    Console.WriteLine(level + " : " + message);
-                }
-                if (FileLog)
-                {
-                    log.WriteLine(DateTime.Now.TimeOfDay + " : " + level + " : " + message);
+                    if (type == LogType.Console || AllConsole)
+                    {
+                        Console.WriteLine(level + " : " + message);
+                    }
+                    if (FileLog)
+                    {
+                        log.WriteLine(DateTime.Now.TimeOfDay + " : " + level + " : " + message);
+                    }
                 }
             }
         }
