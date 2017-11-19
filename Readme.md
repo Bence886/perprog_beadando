@@ -86,9 +86,6 @@ A futási idők az előbbiekben említett párhuzamosításokkal 25 és 50 sampl
 
 
 
-25 Sampling
-
-s
 
 |   |
 | --- |
