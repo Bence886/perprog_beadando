@@ -48,17 +48,17 @@ A hibakereséshez használt script fájl futtatása pedig a következő eredmén
 
 A félgömbök a különböző eltalált felületekről a további keresések irányát mutatják. Kijelöltem párat a jobb átláthatóság kedvéért.
 
- ![]
+ ![](https://github.com/Bence886/perprog_beadando/blob/master/Images/sampling_scene.png)
 
 **UML osztálydiagram** :
 
- ![]
+ ![](https://github.com/Bence886/perprog_beadando/blob/master/Images/uml.png)
 
 **Szekvenciális megoldás:**
 
 Az diagramok x tengelye az időt jelöli másodpercben. Az y tengely pedig a processzor kihasználtságot %-ban.
 
-Szekvenciális futtatás 25-ös samplingel. ![]
+Szekvenciális futtatás 25-ös samplingel. ![](https://github.com/Bence886/perprog_beadando/blob/master/Images/sequential_sequential.png)
 
 **Párhuzamosítás:**
 
@@ -68,25 +68,23 @@ Ekkora mértékű párhuzamosítás viszont túlságosan fragmentálná a probl�
 
 Ezért elsőre azt párhuzamosítottam hogyha több pont is van amire fut a szimuláció akkor azok egyszerre fussanak.
 
- ![]
+ ![](https://github.com/Bence886/perprog_beadando/blob/master/Images/paralel_sequential.png)
 
 Jól látható hogy a futási idő is kevesebb lett és a processzor kihasználtság is duplázódott. A visszaesést 45 másodperc körül az okozza hogy az egyik keresési pont szimulálása véget ért.
 
 Ezután megpróbáltam hogy javulna-e a teljesítmény ha a külön szimulálás helyett ez a rész szekvenciális maradna, viszont a sugárkövetés 0. szintjén indítanék minden hívásra egy új szálat. Ez 25-ös samplingnél 25 szálat jelent, ezután a rekurzió többi szintje már nem indít túl szálat fentebb említet okok miatt.
 
- ![]
+ ![](https://github.com/Bence886/perprog_beadando/blob/master/Images/sequential_paralel.png)
 
 Az ábrán látható hogy a futásidő a negyedére csökkent a teljesen szekvenciálishoz képest és közel maximális a processzor kihasználtság. Kis megjegyzés hogyha a program profiler és debugger nélkül fut akkor 100%-os a processzor kihasználtság. A visszaesés a szimuláció felénél az első keresési pont végét és a második kezdetét jelenti, itt szűntek meg a szálak és indultak az újak.
 
-Ezután mind a két eddigi ponton bevezettem a párhuzamosságot ami 25 ös sampling esetén 50 szálat jelent plusz a 2 szálat ami indítja a sugárkövetéseket és a végén összegyűjti az eredményt is. ![]()
+Ezután mind a két eddigi ponton bevezettem a párhuzamosságot ami 25 ös sampling esetén 50 szálat jelent plusz a 2 szálat ami indítja a sugárkövetéseket és a végén összegyűjti az eredményt is. ![](https://github.com/Bence886/perprog_beadando/blob/master/Images/paralal_paralel.png)
 
 A futási idő így még kevesebb lett, és a processzor kihasználtság is közel száz százalékos.
 
 A futási idők az előbbiekben említett párhuzamosításokkal 25 és 50 samplingel egymáshoz képest futási időben a következőképp alakulnak:
 
- LibreOffice/5.0.2.2$Linux\_X86\_64 LibreOffice\_project/37b43f919e4de5eeaca9b9755ed688758a8251fe / /
 
-;
 
 25 Sampling
 
@@ -95,7 +93,7 @@ s
 |   |
 | --- |
 
- ![]
+ ![](https://github.com/Bence886/perprog_beadando/blob/master/Images/diagrams.png)
 
 Ebből látszik hogy kis és nagy adatmennyiség esetén is a sugárkövetés párhuzamosítása jelenti a nagyobb teljesítménybeli javulást, ami várható is volt mivel az a leg számítás igényesebb rész. A külön keresések párhuzamosítása önmagában és a másik párhuzamosítással együtt is javít a futási időn de nem túl jelentősen.
 
