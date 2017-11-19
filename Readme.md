@@ -4,12 +4,6 @@ Beadandó
 
 # Fényforrás irányának keresése sugárkövetéssel
 
-**Név** : Tóth Bence Tamás
-
-**Netun** : NTHJMZ
-
-**Forráskód** : [https://github.com/Bence886/perprog\_beadando.git](https://github.com/Bence886/perprog_beadando.git)
-
 **Feladat meghatározás** :
 
 A szakdolgozatom a fák növekedésének szimulációjáról szól, amiben jelentős szerepet játszik a fény és legfőképpen annak iránya az ágvéghez képest. Ennek meghatározása a feladat.
