@@ -23,18 +23,24 @@ namespace LightFinder
 
         public void StartTrace()
         {
+            int i = 0;
             foreach (Camera item in Cameras)
             {
-                item.StartTrace(Lights, Triangles);
+                item.StartTrace(Lights, Triangles, i++);
             }
         }
 
-        public void Trace()
+        public void StartParalelTrace()
         {
+            int i = 0;
+            List<Task> tasks = new List<Task>();
             foreach (Camera item in Cameras)
             {
-                item.StartTrace(Lights, Triangles);
+                int temp = i++;
+                Task t = Task.Run(()=> item.StartTrace(Lights, Triangles, temp));
+                tasks.Add(t);
             }
+            Task.WaitAll(tasks.ToArray());
         }
 
         private void CreateFloor(float z)
