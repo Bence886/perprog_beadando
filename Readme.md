@@ -85,11 +85,6 @@ A futási idő így még kevesebb lett, és a processzor kihasználtság is köz
 A futási idők az előbbiekben említett párhuzamosításokkal 25 és 50 samplingel egymáshoz képest futási időben a következőképp alakulnak:
 
 
-
-
-|   |
-| --- |
-
  ![](https://github.com/Bence886/perprog_beadando/blob/master/Images/diagrams.png)
 
 Ebből látszik hogy kis és nagy adatmennyiség esetén is a sugárkövetés párhuzamosítása jelenti a nagyobb teljesítménybeli javulást, ami várható is volt mivel az a leg számítás igényesebb rész. A külön keresések párhuzamosítása önmagában és a másik párhuzamosítással együtt is javít a futási időn de nem túl jelentősen.
