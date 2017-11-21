@@ -20,6 +20,13 @@ namespace LightFinder
             this.Z = z;
         }
 
+        public Point(Point direction)
+        {
+            this.X = direction.X;
+            this.Y = direction.Y;
+            this.Z = direction.Z;
+        }
+
         public static Point operator -(Point a, Point b)
         {
             return new Point(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
@@ -124,6 +131,7 @@ namespace LightFinder
         }
 
         static Random rnd = new Random();
+
         public static Point GeneratePointOnHalfSphere(Triangle hitTriangle, bool backfacing)
         {
             Point normal = new Point(hitTriangle.Normal.X, hitTriangle.Normal.Y, hitTriangle.Normal.Z);

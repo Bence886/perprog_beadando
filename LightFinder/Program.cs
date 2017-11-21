@@ -28,8 +28,9 @@ namespace LightFinder
                 bs.CreateObject(new List<Point> { item.Location}, "Light");
             }
 
-            //s.StartTrace();
-            s.StartParalelTrace();
+            s.StartTrace();
+            //s.StartParalelTrace();
+
             Log.WriteLog("Trace finished", LogType.Console, LogLevel.Message);
             foreach (Camera item in s.Cameras)
             {

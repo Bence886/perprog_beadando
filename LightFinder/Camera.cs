@@ -21,15 +21,15 @@ namespace LightFinder
         {
             LookDirections = new List<Point>();
             Origin = b;
-            MaxDept = 2;
-            Sampling = 25;
+            MaxDept = 5;
+            Sampling = 10;
         }
         CreateBlenderScript bs;
         public void StartTrace(List<LightSource> lights, List<Triangle> triangles, int num)
         {
             bs = new CreateBlenderScript("BlenderTrace" + num + ".txt");
-            StartParalel(lights, triangles);
-            //StartSequentil(lights, triangles);
+            //StartParalel(lights, triangles);
+            StartSequentil(lights, triangles);
         }
 
         private void StartSequentil(List<LightSource> lights, List<Triangle> triangles)
@@ -114,8 +114,9 @@ namespace LightFinder
                 if (dept + 1 <= MaxDept)
                 {
                     Point pointHit = triangleHit.InsideTringle(ray);
-                    Point offset = ray.GetEndPoint();
-                    offset.MultiplyByLambda(-0.0001f);
+                    Point offset = new Point(ray.Direction);
+                    offset.MultiplyByLambda(-1);
+                    offset.MultiplyByLambda(0.001f);
                     pointHit += offset;
                     bool backfacing = Point.DotProduct(triangleHit.Normal, ray.Direction) > 0;
                     List<Point> TracePoints = new List<Point>();

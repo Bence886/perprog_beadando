@@ -19,7 +19,21 @@ namespace LightFinder
         public Point P0 { get; set; }
         public Point P1 { get; set; }
         public Point P2 { get; set; }
-        public Point Normal { get; set; }
+
+        public Point Normal
+        {
+            get
+            {
+                return normal;
+            }
+
+            set
+            {
+                normal = value;
+            }
+        }
+
+        private Point normal;
 
         private void CalcNormal()
         {//https://math.stackexchange.com/questions/305642/how-to-find-surface-normal-of-a-triangle

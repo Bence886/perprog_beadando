@@ -18,7 +18,7 @@ namespace LightFinder
             Triangles = new List<Triangle>();
             Cameras = new List<Camera>();
             ReadInputFile(filename);
-            CreateFloor(-1);
+            CreateFloor(0.05f);
         }
 
         public void StartTrace()
@@ -45,8 +45,8 @@ namespace LightFinder
 
         private void CreateFloor(float z)
         {
-            Triangles.Add(new Triangle(new Point(100, -100, 0), new Point(100, 100, 0), new Point(-100, 100, 0)));
-            Triangles.Add(new Triangle(new Point(-100, 100, 0), new Point(-100, -100, 0), new Point(100, -100, 0)));
+            Triangles.Add(new Triangle(new Point(100, -100, z), new Point(100, 100, z), new Point(-100, 100, z)));
+            Triangles.Add(new Triangle(new Point(-100, 100, z), new Point(-100, -100, z), new Point(100, -100, z)));
             Log.WriteLog("Created floors", LogType.Console, LogLevel.Debug);
         }
 
