@@ -21,15 +21,15 @@ namespace LightFinder
         {
             LookDirections = new List<Point>();
             Origin = b;
-            MaxDept = 5;
-            Sampling = 10;
+            MaxDept = 4;
+            Sampling = 25;
         }
         CreateBlenderScript bs;
         public void StartTrace(List<LightSource> lights, List<Triangle> triangles, int num)
         {
             bs = new CreateBlenderScript("BlenderTrace" + num + ".txt");
-            //StartParalel(lights, triangles);
-            StartSequentil(lights, triangles);
+            StartParalel(lights, triangles);
+            //StartSequentil(lights, triangles);
         }
 
         private void StartSequentil(List<LightSource> lights, List<Triangle> triangles)
