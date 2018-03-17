@@ -90,19 +90,19 @@ namespace LightFinder
             return string.Format("Triangle x:{0}, y:{1}, z:{2}",P0.ToString(), P1.ToString(), P2.ToString());
         }
 
-        public static Triangle ClosestTriangleHit(List<Triangle> triangles, Vector ray)
+        public static Tuple<Triangle, Point> ClosestTriangleHit(List<Triangle> triangles, Vector ray)
         {
-            Point closest = null;
+            Point closestPoint = null;
             Triangle hitTriangle = null;
             foreach (Triangle item in triangles)
             {
                 try
                 {
                     Point hit = item.InsideTringle(ray);
-                    if (closest == null || Point.Distance(ray.Location, hit) < Point.Distance(ray.Location, closest))
+                    if (closestPoint == null || Point.Distance(ray.Location, hit) < Point.Distance(ray.Location, closestPoint))
                     {
                         hitTriangle = item;
-                        closest = hit;
+                        closestPoint = hit;
                     }
                 }
                 catch (NoHit)
@@ -115,7 +115,7 @@ namespace LightFinder
                 throw new NoHit();
             }
             Log.WriteLog(string.Format("Closest Trianglehit at: {0}", hitTriangle.ToString()), LogType.Console, LogLevel.Trace);
-            return hitTriangle;
+            return new Tuple<Triangle, Point>(hitTriangle, closestPoint);
         }
     }
 }

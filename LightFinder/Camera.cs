@@ -21,8 +21,8 @@ namespace LightFinder
         {
             LookDirections = new List<Point>();
             Origin = b;
-            MaxDept = 4;
-            Sampling = 25;
+            MaxDept = 2;
+            Sampling = 1000;
         }
         CreateBlenderScript bs;
         public void StartTrace(List<LightSource> lights, List<Triangle> triangles, int num)
@@ -38,7 +38,7 @@ namespace LightFinder
             {
                 Point ray = Point.GeneratePointOnSphere(Origin);
                 Vector vector = new Vector(Origin, ray);
-                float a = Trace(lights, triangles, ref vector, 0);
+                float a = Trace(lights, triangles, vector, MaxDept);
                 ray.MultiplyByLambda(a);
                 if (!LookDirections.Contains(vector.GetEndPoint()))
                 {
@@ -65,7 +65,7 @@ namespace LightFinder
         {
             Point ray = Point.GeneratePointOnSphere(Origin);
             Vector vector = new Vector(Origin, ray);
-            float a = Trace(lights, triangles, ref vector, 0);
+            float a = Trace(lights, triangles, vector, MaxDept);
             ray.MultiplyByLambda(a);
             if (!LookDirections.Contains(vector.GetEndPoint()))
             {
@@ -76,7 +76,7 @@ namespace LightFinder
             }
         }
 
-        private float Trace(List<LightSource> lights, List<Triangle> triangles, ref Vector ray, int dept)
+        /*private float Trace(List<LightSource> lights, List<Triangle> triangles, ref Vector ray, int dept)
         {
             Log.WriteLog("Trace Dept: " + dept, LogType.Console, LogLevel.Trace);
 
@@ -140,23 +140,66 @@ namespace LightFinder
                 }
             }
             return 0;
+        }*/
+
+        private float Trace(List<LightSource> lights, List<Triangle> triangles, Vector startPoint, int dept)
+        {
+            for (int deptCounter = 0; deptCounter < dept; deptCounter++)
+            {
+                List<LightSource> directHitLights = new List<LightSource>();
+                Point rayToLight;
+                foreach (LightSource item in lights)
+                {
+                    rayToLight = item.Location - startPoint.Location;
+                    rayToLight.Normalize();
+                    LightSource l = LightHitBeforeTriangle(item, triangles, new Vector(startPoint.Location, rayToLight));
+                    if (l != null)
+                    {
+                        directHitLights.Add(l);
+                    }
+                }
+                if (directHitLights.Count() > 0)
+                {
+                    return lights.Select(x => x.Intensity).Max();
+                }
+                Tuple<Triangle, Point> TriangePointPair = null;
+                try
+                {
+                    TriangePointPair = Triangle.ClosestTriangleHit(triangles, startPoint);
+                }
+                catch (NoHit)
+                {
+                    return 0;
+                }
+
+                Triangle triangleHit = TriangePointPair.Item1;
+                Point pointHit = TriangePointPair.Item2;
+                Point offset = new Point(startPoint.Direction);
+                offset.MultiplyByLambda(-1);
+                offset.MultiplyByLambda(0.001f);
+                pointHit += offset;
+
+                bool backfacing = Point.DotProduct(triangleHit.Normal, startPoint.Direction) > 0;
+
+                startPoint = new Vector(pointHit, Point.GeneratePointOnHalfSphere(triangleHit, backfacing));
+            }
+            return 0;
         }
 
         private LightSource LightHitBeforeTriangle(LightSource light, List<Triangle> triangles, Vector ray)
         {
             LightSource lightHit = light;
-            Triangle triangleHit = null;
+            Tuple<Triangle, Point> TrianglePointPair = null;
             try
             {
-                triangleHit = Triangle.ClosestTriangleHit(triangles, ray);
+                TrianglePointPair = Triangle.ClosestTriangleHit(triangles, ray);
             }
             catch (NoHit)
             {
             }
-            Point pointHit = null;
-            if (triangleHit != null)
+            if (TrianglePointPair != null)
             {
-                pointHit = triangleHit.InsideTringle(ray);
+                Point pointHit = TrianglePointPair.Item2;
                 if (Point.Distance(lightHit.Location, ray.Location) < Point.Distance(pointHit, ray.Location))
                 {
                     return lightHit;
