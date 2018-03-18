@@ -29,10 +29,10 @@ namespace LightFinder
         {
             bs = new CreateBlenderScript("BlenderTrace" + num + ".txt");
             StartParalel(lights, triangles);
-            //StartSequentil(lights, triangles);
+            //StartSequential(lights, triangles);
         }
 
-        private void StartSequentil(List<LightSource> lights, List<Triangle> triangles)
+        private void StartSequential(List<LightSource> lights, List<Triangle> triangles)
         {
             for (int i = 0; i < Sampling; i++)
             {
@@ -152,10 +152,9 @@ namespace LightFinder
                 {
                     rayToLight = item.Location - startPoint.Location;
                     rayToLight.Normalize();
-                    LightSource l = LightHitBeforeTriangle(item, triangles, new Vector(startPoint.Location, rayToLight));
-                    if (l != null)
+                    if (LightHitBeforeTriangle(item, triangles, new Vector(startPoint.Location, rayToLight)))
                     {
-                        directHitLights.Add(l);
+                        directHitLights.Add(item);
                     }
                 }
                 if (directHitLights.Count() > 0)
@@ -186,9 +185,8 @@ namespace LightFinder
             return 0;
         }
 
-        private LightSource LightHitBeforeTriangle(LightSource light, List<Triangle> triangles, Vector ray)
+        private bool LightHitBeforeTriangle(LightSource light, List<Triangle> triangles, Vector ray)
         {
-            LightSource lightHit = light;
             Tuple<Triangle, Point> TrianglePointPair = null;
             try
             {
@@ -200,16 +198,16 @@ namespace LightFinder
             if (TrianglePointPair != null)
             {
                 Point pointHit = TrianglePointPair.Item2;
-                if (Point.Distance(lightHit.Location, ray.Location) < Point.Distance(pointHit, ray.Location))
+                if (Point.Distance(light.Location, ray.Location) < Point.Distance(pointHit, ray.Location))
                 {
-                    return lightHit;
+                    return true;
                 }
                 else
                 {
-                    return null;
+                    return false;
                 }
             }
-            return light;
+            return true;
         }
     }
 }
