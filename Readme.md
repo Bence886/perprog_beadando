@@ -1,6 +1,6 @@
 # Párhuzamos és elosztott rendszerek programozása
 
-Beadandó
+Beadandó [![Build Status](https://travis-ci.org/Bence886/perprog_beadando.svg?branch=master)](https://travis-ci.org/Bence886/perprog_beadando)
 
 # Fényforrás irányának keresése sugárkövetéssel
 
