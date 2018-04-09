@@ -1,2 +1,8 @@
 language: csharp
 solution: LightFinder.sln
+before_install:
+  - sudo apt-get install nunit-console
+before_script:
+  - nuget restore LightFinder.sln
+after_script:
+  - nunit-console LightFinderTest/bin/Release/Tests.dll
